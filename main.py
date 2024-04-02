@@ -12,9 +12,14 @@ def main():
     root.geometry(f'{WIDTH}x{LENGTH}')
 
     # main code
-    loc = Label(root, text = 'Please input either the postal code or the name of the city', font=('Times New Roman', 17, 'bold'))
+    loc = Label(root, text = 'Please input either the postal code or the name of desired city: ', font=('Kannada MW', 17))
+    loc.pack()
 
-    loc.grid(column = 50, row = 5)
+    entry = Entry(root)
+    entry.pack()
+
+
+
     root.mainloop()
 
 if __name__ == '__main__':
