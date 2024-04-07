@@ -12,20 +12,22 @@ def main():
     root.title("Real Estate Collector v1")
     root.geometry(f'{WIDTH}x{LENGTH}')
 
-    # main code
-    Label(root, text = 'Please input the name or zip code of your desired location: ', font=('Kannada MW', 17)).place(relx=.5, rely=.05, anchor=N)
-
     def displayData(textarg):
-        Label(root, text=textarg).grid()
+        Label(basicFrame, text=textarg).pack()
+
+    basicFrame = Frame(root).pack()
+    inputLabel = Label(basicFrame, text = 'Please input the name or zip code of your desired location: ', font=('Kannada MW', 17))
+    inputLabel.pack(side=TOP)
 
     # The following variable would be used for storing the post code or name of city that the user requests
-    locationVar = StringVar(root, value = None)
-    Entry(root, textvariable=locationVar).place(relx=0.3, rely=0.18)
+    locationVar = StringVar(basicFrame, value = None)
+    Entry(basicFrame, textvariable=locationVar).pack()
     
-    submitButton = Button(root, text='SUBMIT')
+    # goofy submit button
+    submitButton = Button(basicFrame, text='SUBMIT')
     submitButton.configure(command=lambda: displayData(locationVar.get()))
-    submitButton.configure(relief=SUNKEN, padx=1.5, pady=1.5, fg='black', font=('Kannada MW', '12'))
-    submitButton.place(relx=0.4, rely=0.3)
+    submitButton.configure(relief=SUNKEN, padx=1.5, pady=1.5, font=('Kannada MW', '12'))
+    submitButton.pack()
 
     root.mainloop()
 
