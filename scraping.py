@@ -29,15 +29,16 @@ def get_info(zip):
         address=element.find_element(By.CSS_SELECTOR, "div.bp-Homecard__Address.flex.align-center.color-text-primary.font-body-xsmall-compact").text
         bed=element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--beds.text-nowrap").text
         bath=element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--baths.text-nowrap").text
-        print(price,"\n",bed,bath,"\n",address,"\n")
-        price=price.replace(",","")
-        price=int(price.replace("$",""))
-        total+=price
-        counter+=1
+        return(price,"\n",bed,bath,"\n",address,"\n")
 def get_average():
-    print("$",(total/counter))
+    price=price.replace(",","")
+    price=int(price.replace("$",""))
+    total+=price
+    counter+=1
+    return ("$",(total/counter))
 
 get_info(zip)
+get_average()
 
 time.sleep(5)
 driver.quit
