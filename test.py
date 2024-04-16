@@ -18,6 +18,7 @@ def next():
     if i>=(len(list)-1):
         next_button.forget()
         pass
+    next_button.pack()
     main_frame.forget()
     element.forget()
     element=Label(main_frame,text=list[i])
@@ -30,6 +31,7 @@ def back():
     if i<=0:
         back_button.forget()
         pass
+    back_button.pack()
     main_frame.forget()
     element.forget()
     element=Label(main_frame,text=list[i])
