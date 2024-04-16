@@ -1,6 +1,6 @@
 from tkinter import * 
 from tkinter.ttk import Style
-import scraping
+from scraping import scrapeData
 
 def main():
 
