@@ -4,6 +4,8 @@ from scraping import scrapeData
 
 def main():
 
+    # tests
+
     WIDTH = 512
     LENGTH = 250
 
