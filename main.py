@@ -1,5 +1,6 @@
 from tkinter import * 
 from tkinter.ttk import Style
+import scraping
 
 def main():
 
@@ -8,6 +9,9 @@ def main():
 
     # Creating a root window for main operations
     root = Tk()
+
+    # Stops the window from being resizable
+    root.resizable(0, 0)
 
     # root window 
     root.title("Real Estate Collector v1")
@@ -31,7 +35,7 @@ def main():
     # goofy submit button
     submitButton = Button(basicFrame, text='SUBMIT')
     submitButton.configure(command=lambda: displayData(locationVar.get()))
-    submitButton.configure(relief=SUNKEN, padx=1.5, pady=1.5, font=('Kannada MW', '12'))
+    submitButton.configure(relief=RAISED, padx=1.5, pady=1.5, font=('Kannada MW', '15'))
     submitButton.pack(pady=10)
 
     root.mainloop()
