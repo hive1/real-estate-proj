@@ -1,6 +1,7 @@
 from tkinter import * 
 from tkinter.ttk import Style
 from scraping import scrapeData
+from functions import findAvg
 
 def main():
 
@@ -46,9 +47,8 @@ def main():
     addresses = []
     beds = []
     baths = []
-    avg = None
 
-    (prices, addresses, beds, baths, avg) = scrapeData(locationVar.get())
+    (prices, addresses, beds, baths, avgPrice) = scrapeData(locationVar.get())
 
     root = Tk() 
 
@@ -73,11 +73,17 @@ def main():
 
     textAvg = Text(average,
                    height = 45,
-                   width = 30) # this value specifically keeps turning into a str and idk why
+                   width = 30,
+                   font = ('Fixedsys', 12)) # this value specifically keeps turning into a str and idk why
     textAvg.place(relx = .5, rely = .5, anchor='center')
-    textAvg.insert(END, beds)
 
     # this function will be defined outside of the main file as to improve organization
+    avgBed = findAvg(beds)
+    avgBath = findAvg(baths)
+
+    textAvg.insert(END, f'Average Beds: {round(avgBed, 2)}\n')
+    textAvg.insert(END, f'Average Baths: {round(avgBath, 2)}\n')
+    textAvg.insert(END, f'Average Price: ${round(avgPrice, 2)}')
 
     root.mainloop()
 
