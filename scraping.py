@@ -18,11 +18,12 @@ def scrapeData(zip_code):
 
     '''Yea but imagine if we didn't have to SEE selenium work'''
     chrome_options = Options()
-    chrome_options.add_argument("--headless")  # Ensure GUI is off
+    chrome_options.add_argument("--disable-gpu")
+    '''chrome_options.add_argument("--headless=new")  # Ensure GUI is off
     chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
     chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
-
-    driver = webdriver.Chrome()
+    '''
+    driver = webdriver.Chrome(options=chrome_options)
     driver.get("https://www.redfin.com")
     # chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
     # chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems

@@ -16,7 +16,8 @@ def findAvg(coll: list) -> int:
 
         except ValueError:
             continue
-
+    if count == 0:
+        return 0
     return total/count
          
 def main():
