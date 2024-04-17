@@ -52,7 +52,7 @@ def main():
     baths = []
     avg = None
 
-    (prices, addresses, beds, baths, avg) = scrapeData(locationVar.get())
+    #(prices, addresses, beds, baths, avg) = scrapeData(locationVar.get())
 
     root = Tk() 
 
