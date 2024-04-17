@@ -18,11 +18,11 @@ def scrapeData(zip_code):
     driver = webdriver.Chrome()
     driver.get("https://www.redfin.com")
 
-    '''Yea but imagine if we didn't have to SEE selenium work'''
+    '''Yea but imagine if we didn't have to SEE selenium work
     chrome_options = ChromeOptions()
     chrome_options.add_argument("--headless")  # Enables headless mode
     chrome_options.add_argument("--disable-gpu")  # Disables GPU hardware acceleration
-
+    '''
     button=driver.find_element(By.XPATH, '/html/body/div[1]/div[6]/div[2]/div/section/div/div/div/div/div/div/div/div[2]/div/div/form/div/div/input')
     button.click()
     button.send_keys(zip_code)
