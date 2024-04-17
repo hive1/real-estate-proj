@@ -18,6 +18,11 @@ def scrapeData(zip_code):
     driver = webdriver.Chrome()
     driver.get("https://www.redfin.com")
 
+    '''Yea but imagine if we didn't have to SEE selenium work'''
+    chrome_options = ChromeOptions()
+    chrome_options.add_argument("--headless")  # Enables headless mode
+    chrome_options.add_argument("--disable-gpu")  # Disables GPU hardware acceleration
+
     button=driver.find_element(By.XPATH, '/html/body/div[1]/div[6]/div[2]/div/section/div/div/div/div/div/div/div/div[2]/div/div/form/div/div/input')
     button.click()
     button.send_keys(zip_code)
@@ -33,11 +38,8 @@ def scrapeData(zip_code):
     for element in driver.find_elements(By.CLASS_NAME, "bp-Homecard__Content"):
 
         price = element.find_element(By.CSS_SELECTOR,"span.bp-Homecard__Price--value").text
-
         addresses.append(element.find_element(By.CSS_SELECTOR, "div.bp-Homecard__Address.flex.align-center.color-text-primary.font-body-xsmall-compact").text)
-
         beds.append(element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--beds.text-nowrap").text)
-
         baths.append(element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--baths.text-nowrap").text)
 
         price = price.replace(",", "")
@@ -49,6 +51,9 @@ def scrapeData(zip_code):
         counter+=1
     
     driver.quit
-    return (prices, addresses, beds, baths, (total/counter))
+    return prices, addresses, beds, baths, (total/counter)
 
-print(scrapeData('11934'))
+
+'''this is only for debugging'''
+if __name__ == '__main__':
+    print(scrapeData('11934'))

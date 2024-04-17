@@ -48,7 +48,7 @@ def main():
     baths = []
     avg = None
 
-    (prices, addresses, baths, baths, avg) = scrapeData(locationVar.get())
+    (prices, addresses, beds, baths, avg) = scrapeData(locationVar.get())
 
     root = Tk() 
 
@@ -57,9 +57,25 @@ def main():
     root.geometry(f'{disWidth}x{disHeight}')
     root.title('Real Estate Data')
 
-    '''lowkey a majority of my code was overwritten by some headass commit issues'''
-    average = Frame(root, side=RIGHT, height=disHeight, width=(disWidth/3))
-    average.pack()
+    '''starting the construction of the average frame to the right of the screen'''
+    average = Frame(root, 
+                    height = (disHeight-20), 
+                    width = (disWidth/5), 
+                    highlightcolor = 'black', 
+                    highlightbackground = 'black', 
+                    highlightthickness = 5)
+    average.pack(side='right', padx=30, pady=30)
+
+    avgHead = Label(average, 
+                    text = 'Averages',
+                    font = ('Fixedsys', 25))
+    avgHead.place(relx = 0.5, rely = 0.05, anchor = 'center')
+
+    textAvg = Text(average,
+                   height = 45,
+                   width = 30) # this value specifically keeps turning into a str and idk why
+    textAvg.place(relx = .5, rely = .5, anchor='center')
+    textAvg.insert(END, beds)
 
 
     root.mainloop()
