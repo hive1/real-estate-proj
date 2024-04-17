@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 import requests
 import json
 from scraping import scrapeData
-from functions import findAvg
+from functions import findAvg, next
 
 def main():
 
@@ -105,7 +105,9 @@ def main():
     house_image.create_image(320/1.5,230/1.5, image=photo)
     house_image.image = photo
     house_image.place(relx = 0.27, rely = .303, anchor='center')
-
+    textInfo.insert(END,prices[0])
+    next_button=Button(text="next",command=lambda:next(prices,textInfo))
+    next_button.place(relx = 0.27, rely = .1, anchor='center')
 
     root.mainloop()
 

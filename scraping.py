@@ -43,10 +43,11 @@ def scrapeData(zip_code):
         beds.append(element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--beds.text-nowrap").text)
         baths.append(element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--baths.text-nowrap").text)
 
-        price = price.replace(",", "")
-        price = price.replace("$", "")
+        price_num = price
+        price_num=price_num.replace(",", "")
+        price_num = price_num.replace("$", "")
 
-        total += int(price)
+        total += int(price_num)
         prices.append(price)
 
         counter+=1

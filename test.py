@@ -11,7 +11,7 @@ main_frame.pack()
 root.geometry('600x500')
 root.title('Real Estate Data')
 
-def next():
+def next(price):
     global i
     global element
     i+=1

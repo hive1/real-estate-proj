@@ -1,4 +1,5 @@
 import math
+from tkinter import * 
 
 # Find the averages of input lists, most likely containing string characters
 # Remember to ignore the values associated with '-'
@@ -28,7 +29,15 @@ def main():
           '— baths', '— baths', '— baths', '— baths']
     
     print(findAvg(ex))
-
+i=0
+def next(price,text_box):
+    global i
+    i+=1
+    if i>=(len(price)-1):
+        text_box.delete('1.0',END)
+        pass
+    text_box.delete('1.0',END)
+    text_box.insert(END,price[i])
 
 if __name__ == '__main__':
     main()
