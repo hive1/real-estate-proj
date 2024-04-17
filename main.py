@@ -3,7 +3,7 @@ from tkinter.ttk import Style
 from PIL import Image, ImageTk
 import requests
 import json
-#from scraping import scrapeData
+from scraping import scrapeData
 from functions import findAvg
 
 def main():
@@ -52,7 +52,7 @@ def main():
     baths = []
     avg = None
 
-    #(prices, addresses, beds, baths, avg) = scrapeData(locationVar.get())
+    (prices, addresses, beds, baths, avg) = scrapeData(locationVar.get())
 
     root = Tk() 
 
@@ -69,6 +69,7 @@ def main():
                     highlightbackground = 'black', 
                     highlightthickness = 5)
     average.pack(side='right', padx=30, pady=30)
+
     info = Frame(root, 
                     height = (disHeight-20), 
                     width = (disWidth-(disWidth/5+30)), 
@@ -76,19 +77,21 @@ def main():
                     highlightbackground = 'black', 
                     highlightthickness = 5)
     info.pack(side='left', padx=30, pady=30)
+
     avgHead = Label(average, 
                     text = 'Averages',
                     font = ('Fixedsys', 25))
     avgHead.place(relx = 0.5, rely = 0.05, anchor = 'center')
 
     textAvg = Text(average,
-                   height = 45,
+                   height = 40,
                    width = 30,
                    font = ('Fixedsys', 12)) # this value specifically keeps turning into a str and idk why
-    textAvg.place(relx = .5, rely = .5, anchor='center')
-    textAvg.insert(END, beds)
-
-        #textAvg.insert(END, beds)
+    textAvg.place(relx = .5, rely = .53, anchor='center')
+    textAvg.insert(END, f'Average beds: {round(findAvg(beds), 2)}\n')
+    textAvg.insert(END, f'Average baths: {round(findAvg(baths), 2)}\n')
+                   
+    
     textInfo = Text(info,
                    height = 45,
                    width = 60)
