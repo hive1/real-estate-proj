@@ -1,6 +1,9 @@
 from tkinter import * 
 from tkinter.ttk import Style
-from scraping import scrapeData
+from PIL import Image, ImageTk
+import requests
+import json
+#from scraping import scrapeData
 
 def main():
 
@@ -47,8 +50,8 @@ def main():
     beds = []
     baths = []
     avg = None
-
-    (prices, addresses, beds, baths, avg) = scrapeData(locationVar.get())
+    
+    #(prices, addresses, beds, baths, avg) = scrapeData(locationVar.get())
 
     root = Tk() 
 
@@ -65,7 +68,13 @@ def main():
                     highlightbackground = 'black', 
                     highlightthickness = 5)
     average.pack(side='right', padx=30, pady=30)
-
+    info = Frame(root, 
+                    height = (disHeight-20), 
+                    width = (disWidth-(disWidth/5+30)), 
+                    highlightcolor = 'black', 
+                    highlightbackground = 'black', 
+                    highlightthickness = 5)
+    info.pack(side='left', padx=30, pady=30)
     avgHead = Label(average, 
                     text = 'Averages',
                     font = ('Fixedsys', 25))
@@ -75,8 +84,20 @@ def main():
                    height = 45,
                    width = 30) # this value specifically keeps turning into a str and idk why
     textAvg.place(relx = .5, rely = .5, anchor='center')
-    textAvg.insert(END, beds)
-
+    #textAvg.insert(END, beds)
+    textInfo = Text(info,
+                   height = 45,
+                   width = 60)
+    textInfo.place(relx = 0.73, rely = .5, anchor='center')
+    
+    url = "https://ssl.cdn-redfin.com/photo/269/islphoto/927/genIslnoResize.3543927_0.jpg"
+    image = Image.open(requests.get(url, stream=True).raw)
+    photo = ImageTk.PhotoImage(image)
+    house_image = Canvas(info, width=640/1.5, 
+            height=460/1.5)
+    house_image.create_image(320/1.5,230/1.5, image=photo)
+    house_image.image = photo
+    house_image.place(relx = 0.27, rely = .303, anchor='center')
 
     root.mainloop()
 
