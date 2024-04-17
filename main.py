@@ -77,6 +77,7 @@ def main():
     textAvg.place(relx = .5, rely = .5, anchor='center')
     textAvg.insert(END, beds)
 
+    # this function will be defined outside of the main file as to improve organization
 
     root.mainloop()
 
