@@ -40,11 +40,15 @@ def scrapeData(zip_code):
 
         baths.append(element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--baths.text-nowrap").text)
 
-        price=price.replace(",","")
-        prices.append(int(price.replace("$","")))
+        price = price.replace(",", "")
+        price = price.replace("$", "")
 
-        total+=price
+        total += int(price)
+        prices.append(price)
+
         counter+=1
     
     driver.quit
     return (prices, addresses, beds, baths, (total/counter))
+
+print(scrapeData('11934'))

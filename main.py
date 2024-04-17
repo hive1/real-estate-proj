@@ -4,10 +4,8 @@ from scraping import scrapeData
 
 def main():
 
-    # tests
-
-    WIDTH = 512
-    LENGTH = 250
+    InpWidth = 512
+    InpHeight = 250
 
     # Creating a root window for main operations
     root = Tk()
@@ -17,7 +15,7 @@ def main():
 
     # root window 
     root.title("Real Estate Collector v1")
-    root.geometry(f'{WIDTH}x{LENGTH}')
+    root.geometry(f'{InpWidth}x{InpHeight}')
 
     def displayData(textarg):
         Label(basicFrame, text=textarg).pack()
@@ -52,11 +50,17 @@ def main():
 
     (prices, addresses, baths, baths, avg) = scrapeData(locationVar.get())
 
-    root = Tk()
-    root.geometry('1600x800')
+    root = Tk() 
+
+    disWidth = 1600
+    disHeight = 800
+    root.geometry(f'{disWidth}x{disHeight}')
     root.title('Real Estate Data')
 
     '''lowkey a majority of my code was overwritten by some headass commit issues'''
+    average = Frame(root, side=RIGHT, height=disHeight, width=(disWidth/3))
+    average.pack()
+
 
     root.mainloop()
 
