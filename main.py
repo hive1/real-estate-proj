@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 import requests
 import json
 #from scraping import scrapeData
+from functions import findAvg
 
 def main():
 
@@ -50,8 +51,8 @@ def main():
     beds = []
     baths = []
     avg = None
-    
-    #(prices, addresses, beds, baths, avg) = scrapeData(locationVar.get())
+
+    (prices, addresses, beds, baths, avg) = scrapeData(locationVar.get())
 
     root = Tk() 
 
@@ -82,22 +83,11 @@ def main():
 
     textAvg = Text(average,
                    height = 45,
-                   width = 30) # this value specifically keeps turning into a str and idk why
+                   width = 30,
+                   font = ('Fixedsys', 12)) # this value specifically keeps turning into a str and idk why
     textAvg.place(relx = .5, rely = .5, anchor='center')
-    #textAvg.insert(END, beds)
-    textInfo = Text(info,
-                   height = 45,
-                   width = 60)
-    textInfo.place(relx = 0.73, rely = .5, anchor='center')
-    
-    url = "https://ssl.cdn-redfin.com/photo/269/islphoto/927/genIslnoResize.3543927_0.jpg"
-    image = Image.open(requests.get(url, stream=True).raw)
-    photo = ImageTk.PhotoImage(image)
-    house_image = Canvas(info, width=640/1.5, 
-            height=460/1.5)
-    house_image.create_image(320/1.5,230/1.5, image=photo)
-    house_image.image = photo
-    house_image.place(relx = 0.27, rely = .303, anchor='center')
+    textAvg.insert(END, beds)
+
 
     root.mainloop()
 
