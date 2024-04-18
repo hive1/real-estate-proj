@@ -15,13 +15,11 @@ def scrapeData(zip_code):
     addresses = []
     beds = []
     baths = []
-    images=[]
 
     '''Yea but imagine if we didn't have to SEE selenium work'''
     chrome_options = Options()
     chrome_options.add_argument("--disable-gpu") # Disables GPU hardware acceleration
     #chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
-    #chrome_options.add_argument("--headless=new")
     #chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
     driver = webdriver.Chrome(options=chrome_options)
     driver.get("https://www.redfin.com")
@@ -36,27 +34,25 @@ def scrapeData(zip_code):
     counter=0
 
     WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.CLASS_NAME, "HomeCardContainer flex justify-center selectedHomeCard"))
+        EC.presence_of_element_located((By.CLASS_NAME, "bp-Homecard__Content"))
     )
-    for element in driver.find_elements(By.CLASS_NAME, "HomeCardContainer flex justify-center selectedHomeCard"):
+    for element in driver.find_elements(By.CLASS_NAME, "bp-Homecard__Content"):
 
         price = element.find_element(By.CSS_SELECTOR,"span.bp-Homecard__Price--value").text
         addresses.append(element.find_element(By.CSS_SELECTOR, "div.bp-Homecard__Address.flex.align-center.color-text-primary.font-body-xsmall-compact").text)
         beds.append(element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--beds.text-nowrap").text)
         baths.append(element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--baths.text-nowrap").text)
-        images.append(element.find_element(By.CSS_SELECTOR, "img.bp-Homecard__Photo--image").text)
 
-        price_num = price
-        price_num=price_num.replace(",", "")
-        price_num = price_num.replace("$", "")
+        price = price.replace(",", "")
+        price = price.replace("$", "")
 
-        total += int(price_num)
+        total += int(price)
         prices.append(price)
 
         counter+=1
     
     driver.quit
-    return prices, addresses, beds, baths, images, (total/counter)
+    return prices, addresses, beds, baths, (total/counter)
 
 
 '''this is only for debugging'''
