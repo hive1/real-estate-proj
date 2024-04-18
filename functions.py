@@ -33,7 +33,7 @@ def main():
     
     print(findAvg(ex))
 i=0
-def next(price,address, bed, bath,image,house,text_box):
+def next(image, price, address, bed, bath, house, text_box):
     global i
     i+=1
     if i>=(len(price)-1):
@@ -51,7 +51,7 @@ def next(price,address, bed, bath,image,house,text_box):
     text_box.insert(END,"\n"+bed[i])
     text_box.insert(END,"\n"+bath[i])
 
-def back(price, address, bed, bath, image,house,text_box):
+def back(image, price, address, bed, bath, house, text_box):
     global i
     i-=1
     if i<0:

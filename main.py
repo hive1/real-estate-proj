@@ -42,13 +42,14 @@ def main():
     root.mainloop()
 
     # Collecting data from the backend
+    images = []
     prices = []
     addresses = []
     beds = []
     baths = []
     avg = None
 
-    (prices, addresses, beds, baths, avg) = scrapeData(locationVar.get())
+    (images, prices, addresses, beds, baths, avg) = scrapeData(locationVar.get())
 
     root = Tk() 
 
@@ -117,9 +118,9 @@ def main():
     textInfo.insert(END,"\n"+baths[0])
 
     '''Next & Back Buttons'''
-    next_button=Button(text="next",command=lambda:next(prices,addresses, beds, baths,textInfo))
+    next_button=Button(text="next",command=lambda:next(images, prices, addresses, beds, baths, house_image, textInfo))
     next_button.place(relx = 0.37, rely = .1, anchor='center')
-    back_button=Button(text="back",command=lambda:back(prices,addresses, beds, baths,textInfo))
+    back_button=Button(text="back",command=lambda:back(images, prices, addresses, beds, baths, house_image, textInfo))
     back_button.place(relx = 0.27, rely = .1, anchor='center')
 
 

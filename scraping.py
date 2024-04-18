@@ -15,6 +15,7 @@ def scrapeData(zip_code):
     addresses = []
     beds = []
     baths = []
+    images = []
 
     '''Yea but imagine if we didn't have to SEE selenium work'''
     chrome_options = Options()
@@ -37,22 +38,23 @@ def scrapeData(zip_code):
         EC.presence_of_element_located((By.CLASS_NAME, "bp-Homecard__Content"))
     )
     for element in driver.find_elements(By.CLASS_NAME, "bp-Homecard__Content"):
-
+        images.append(element.find_element(By.CSS_SELECTOR, "bp-Homecard__Photo--image").text)
         price = element.find_element(By.CSS_SELECTOR,"span.bp-Homecard__Price--value").text
         addresses.append(element.find_element(By.CSS_SELECTOR, "div.bp-Homecard__Address.flex.align-center.color-text-primary.font-body-xsmall-compact").text)
         beds.append(element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--beds.text-nowrap").text)
         baths.append(element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--baths.text-nowrap").text)
 
-        price = price.replace(",", "")
-        price = price.replace("$", "")
+        price_num=price
+        price_num.replace(",", "")
+        price_num.replace("$", "")
 
-        total += int(price)
+        total += int(price_num)
         prices.append(price)
 
         counter+=1
     
     driver.quit
-    return prices, addresses, beds, baths, (total/counter)
+    return images, prices, addresses, beds, baths, (total/counter)
 
 
 '''this is only for debugging'''
