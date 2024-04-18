@@ -102,7 +102,7 @@ def main():
     style.configure('W.TButton', font = ('calibri', 14, 'bold', 'underline'), foreground = 'blue')
 
     '''House Image Shit'''
-    url = "https://ssl.cdn-redfin.com/photo/269/islphoto/927/genIslnoResize.3543927_0.jpg"
+    url = images[0]
     image = Image.open(requests.get(url, stream=True).raw)
     photo = ImageTk.PhotoImage(image)
     house_image = Canvas(info, width=640/1.5, 

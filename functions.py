@@ -36,7 +36,7 @@ i=0
 def next(image, price, address, bed, bath, house, text_box):
     global i
     i+=1
-    if i>=(len(price)-1):
+    if i>=(len(price)):
         i=0
     house.forget()
     url = image[i]
@@ -56,6 +56,12 @@ def back(image, price, address, bed, bath, house, text_box):
     i-=1
     if i<0:
         i=(len(price)-1)
+    url = image[i]
+    img = Image.open(requests.get(url, stream=True).raw)
+    photo = ImageTk.PhotoImage(img)
+    house.create_image(320/1.5,230/1.5, image=photo)
+    house.image = photo
+    house.place(relx = 0.27, rely = .303, anchor='center')
     text_box.delete('1.0',END)
     text_box.insert(END,price[i])
     text_box.insert(END,"\n"+address[i])
