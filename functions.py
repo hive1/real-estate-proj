@@ -34,8 +34,15 @@ def next(price,text_box):
     global i
     i+=1
     if i>=(len(price)-1):
-        text_box.delete('1.0',END)
-        pass
+        i=0
+    text_box.delete('1.0',END)
+    text_box.insert(END,price[i])
+
+def back(price,text_box):
+    global i
+    i-=1
+    if i<0:
+        i=(len(price)-1)
     text_box.delete('1.0',END)
     text_box.insert(END,price[i])
 
