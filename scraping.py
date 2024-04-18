@@ -35,10 +35,14 @@ def scrapeData(zip_code):
     counter=0
 
     WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.CLASS_NAME, "bp-Homecard__Photo--image"))
+        EC.presence_of_element_located((By.CLASS_NAME, "bp-Carousel__cell"))
     )
-    for element in driver.find_elements(By.CLASS_NAME, "bp-Homecard__Photo--image"):
-        images.append(element.get_attribute("src"))
+
+    bigClasses = driver.find_elements(By.CLASS_NAME, "bp-Carousel__cell")
+    for element in bigClasses:
+        image = element.find_element(By.CLASS_NAME, "bp-Homecard__Photo--image")
+        images.append(image.get_attribute('src'))
+
     WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.CLASS_NAME, "bp-Homecard__Content"))
     )
