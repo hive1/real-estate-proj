@@ -35,9 +35,9 @@ def scrapeData(zip_code):
     counter=0
 
     WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.CLASS_NAME, "bp-Homecard__Photo--image"))
+        EC.presence_of_element_located((By.CLASS_NAME, "bp-Homecard__Photo flex justify-center align-center"))
     )
-    for element in driver.find_elements(By.CLASS_NAME, "bp-Homecard__Photo--image"):
+    for element in driver.find_elements(By.CLASS_NAME, "bp-Homecard__Photo flex justify-center align-center"):
         images.append(element.find_element(By.CSS_SELECTOR,"img.bp-Homecard__Photo--image").text)
 
     WebDriverWait(driver, 5).until(
