@@ -36,7 +36,7 @@ i=0
 def next(image, price, address, bed, bath, house, text_box):
     global i
     i+=1
-    if i>=(len(price)):
+    if i>=(len(price)-1):
         i=0
     house.forget()
     url = image[i]
