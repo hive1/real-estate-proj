@@ -84,13 +84,15 @@ def main():
     avgHead.place(relx = 0.5, rely = 0.05, anchor = 'center')
 
     textAvg = Text(average,
-                   height = 40,
+                   height = 35,
                    width = 30,
                    font = ('Fixedsys', 15)) # this value specifically keeps turning into a str and idk why
-    textAvg.place(relx = .5, rely = .6, anchor='center')
+    textAvg.place(relx = .5, rely = .55, anchor='center')
     textAvg.insert(END, f'Average beds: {round(findAvg(beds), 2)}\n')
     textAvg.insert(END, f'Average baths: {round(findAvg(baths), 2)}\n')
-    textAvg.insert(END, f'Average price: ${round(avg, 2)}')
+
+    avgPrice = '{:,}'.format(round(avg, 2))
+    textAvg.insert(END, f'Average price: ${avgPrice}')
     
     textInfo = Text(info,
                    height = 45,
