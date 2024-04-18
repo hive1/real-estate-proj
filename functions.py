@@ -1,5 +1,8 @@
 import math
-from tkinter import * 
+from tkinter import *
+from PIL import Image, ImageTk
+import requests
+import json 
 
 # Find the averages of input lists, most likely containing string characters
 # Remember to ignore the values associated with '-'
@@ -30,18 +33,25 @@ def main():
     
     print(findAvg(ex))
 i=0
-def next(price,address, bed, bath,text_box):
+def next(price,address, bed, bath,image,house,text_box):
     global i
     i+=1
     if i>=(len(price)-1):
         i=0
+    house.forget()
+    url = image[i]
+    img = Image.open(requests.get(url, stream=True).raw)
+    photo = ImageTk.PhotoImage(img)
+    house.create_image(320/1.5,230/1.5, image=photo)
+    house.image = photo
+    house.place(relx = 0.27, rely = .303, anchor='center')
     text_box.delete('1.0',END)
     text_box.insert(END,price[i])
     text_box.insert(END,"\n"+address[i])
     text_box.insert(END,"\n"+bed[i])
     text_box.insert(END,"\n"+bath[i])
 
-def back(price, address, bed, bath, text_box):
+def back(price, address, bed, bath, image,house,text_box):
     global i
     i-=1
     if i<0:
