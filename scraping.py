@@ -20,6 +20,7 @@ def scrapeData(zip_code):
     chrome_options = Options()
     chrome_options.add_argument("--disable-gpu") # Disables GPU hardware acceleration
     #chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
+    #chrome_options.add_argument("--headless=new")
     #chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
     driver = webdriver.Chrome(options=chrome_options)
     driver.get("https://www.redfin.com")
