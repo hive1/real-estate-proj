@@ -33,10 +33,6 @@ def main():
     locationVar = StringVar(basicFrame, value = None)
     Entry(basicFrame, textvariable=locationVar).pack(pady=10)
 
-    # Creating a style variable
-    # style = Style()
-    # style.configure('W.TButton', font = ('calibri', 10, 'bold', 'underline'), foreground = 'red')
-
     # goofy submit button
     submitButton = Button(basicFrame, text='SUBMIT')
     submitButton.configure(command=lambda: displayData(locationVar.get()))
@@ -90,6 +86,7 @@ def main():
     textAvg.place(relx = .5, rely = .55, anchor='center')
     textAvg.insert(END, f'Average beds: {round(findAvg(beds), 2)}\n')
     textAvg.insert(END, f'Average baths: {round(findAvg(baths), 2)}\n')
+    textAvg.config(state = DISABLED)
 
     avgPrice = '{:,}'.format(round(avg, 2))
     textAvg.insert(END, f'Average price: ${avgPrice}')
@@ -98,7 +95,12 @@ def main():
                    height = 45,
                    width = 60)
     textInfo.place(relx = 0.73, rely = .5, anchor='center')
-    
+
+    # making everything 
+    style = Style()
+    style.configure('W.TButton', font = ('calibri', 14, 'bold', 'underline'), foreground = 'blue')
+
+
     url = "https://ssl.cdn-redfin.com/photo/269/islphoto/927/genIslnoResize.3543927_0.jpg"
     image = Image.open(requests.get(url, stream=True).raw)
     photo = ImageTk.PhotoImage(image)
@@ -112,9 +114,9 @@ def main():
     textInfo.insert(END,"\n"+beds[0])
     textInfo.insert(END,"\n"+baths[0])
     next_button=Button(text="next",command=lambda:next(prices,addresses, beds, baths,textInfo))
-    next_button.place(relx = 0.27, rely = .1, anchor='center')
+    next_button.place(relx = 0.37, rely = .1, anchor='center')
     back_button=Button(text="back",command=lambda:back(prices,addresses, beds, baths,textInfo))
-    back_button.place(relx = 0.37, rely = .1, anchor='center')
+    back_button.place(relx = 0.27, rely = .1, anchor='center')
     root.mainloop()
 
 
