@@ -30,21 +30,27 @@ def main():
     
     print(findAvg(ex))
 i=0
-def next(price,text_box):
+def next(price,address, bed, bath,text_box):
     global i
     i+=1
     if i>=(len(price)-1):
         i=0
     text_box.delete('1.0',END)
     text_box.insert(END,price[i])
+    text_box.insert(END,"\n"+address[i])
+    text_box.insert(END,"\n"+bed[i])
+    text_box.insert(END,"\n"+bath[i])
 
-def back(price,text_box):
+def back(price, address, bed, bath, text_box):
     global i
     i-=1
     if i<0:
         i=(len(price)-1)
     text_box.delete('1.0',END)
     text_box.insert(END,price[i])
+    text_box.insert(END,"\n"+address[i])
+    text_box.insert(END,"\n"+bed[i])
+    text_box.insert(END,"\n"+bath[i])
 
 if __name__ == '__main__':
     main()

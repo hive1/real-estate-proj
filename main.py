@@ -106,9 +106,12 @@ def main():
     house_image.image = photo
     house_image.place(relx = 0.27, rely = .303, anchor='center')
     textInfo.insert(END,prices[0])
-    next_button=Button(text="next",command=lambda:next(prices,textInfo))
+    textInfo.insert(END,"\n"+addresses[0])
+    textInfo.insert(END,"\n"+beds[0])
+    textInfo.insert(END,"\n"+baths[0])
+    next_button=Button(text="next",command=lambda:next(prices,addresses, beds, baths,textInfo))
     next_button.place(relx = 0.27, rely = .1, anchor='center')
-    back_button=Button(text="back",command=lambda:back(prices,textInfo))
+    back_button=Button(text="back",command=lambda:back(prices,addresses, beds, baths,textInfo))
     back_button.place(relx = 0.37, rely = .1, anchor='center')
     root.mainloop()
 
