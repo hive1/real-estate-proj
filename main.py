@@ -100,7 +100,7 @@ def main():
     style = Style()
     style.configure('W.TButton', font = ('calibri', 14, 'bold', 'underline'), foreground = 'blue')
 
-
+    '''House Image Shit'''
     url = "https://ssl.cdn-redfin.com/photo/269/islphoto/927/genIslnoResize.3543927_0.jpg"
     image = Image.open(requests.get(url, stream=True).raw)
     photo = ImageTk.PhotoImage(image)
@@ -109,14 +109,20 @@ def main():
     house_image.create_image(320/1.5,230/1.5, image=photo)
     house_image.image = photo
     house_image.place(relx = 0.27, rely = .303, anchor='center')
+
+    '''Info Textbox'''
     textInfo.insert(END,prices[0])
     textInfo.insert(END,"\n"+addresses[0])
     textInfo.insert(END,"\n"+beds[0])
     textInfo.insert(END,"\n"+baths[0])
+
+    '''Next & Back Buttons'''
     next_button=Button(text="next",command=lambda:next(prices,addresses, beds, baths,textInfo))
     next_button.place(relx = 0.37, rely = .1, anchor='center')
     back_button=Button(text="back",command=lambda:back(prices,addresses, beds, baths,textInfo))
     back_button.place(relx = 0.27, rely = .1, anchor='center')
+
+
     root.mainloop()
 
 
