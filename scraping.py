@@ -19,6 +19,8 @@ def scrapeData(zip_code):
     beds = []
     baths = []
     images = []
+    sqft = []
+    acres = []
 
     '''Yea but imagine if we didn't have to SEE selenium work'''
     chrome_options = Options()
@@ -54,19 +56,6 @@ def scrapeData(zip_code):
         EC.presence_of_element_located((By.CSS_SELECTOR, 'div.MapHomeCardReact.MapHomeCard'))
     )
 
-    # counter=0
-    # bigClasses = driver.find_elements(By.ID, 'MapHomeCard_')
-    # x = 0
-    # for element in bigClasses:
-    #     try:
-    #         coverImages = element.find_elements(By.XPATH, f'//*[@id="MapHomeCard_{x}"]/div/div/div[2]/div/div/ul/li[1]/div/img')
-    #         source = coverImages[0].get_attribute('src')
-    #     except:
-    #         break
-
-    #     images.append(source)
-    #     x+=1
-    
     images = []
     results = driver.find_element(By.CSS_SELECTOR,'div.homes.summary').text
     results = results.replace(" homes•","")
@@ -86,6 +75,8 @@ def scrapeData(zip_code):
         addresses.append(element.find_element(By.CSS_SELECTOR, "div.bp-Homecard__Address.flex.align-center.color-text-primary.font-body-xsmall-compact").text)
         beds.append(element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--beds.text-nowrap").text)
         baths.append(element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--baths.text-nowrap").text)
+        sqft.append(element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--sqft.text-nowrap").text)
+        acres.append(element.find_element(By.CSS_SELECTOR,"span.bp-Homecard__Stats--lotsize.text-ellipsis").text)
 
         price_num=price
         price_num=price_num.replace(",", "")
@@ -97,7 +88,7 @@ def scrapeData(zip_code):
         counter+=1
     
     driver.quit
-    return images, prices, addresses, beds, baths, (total/counter)
+    return images, prices, addresses, beds, baths, sqft, acres, (total/counter)
 
 
 '''this is only for debugging'''

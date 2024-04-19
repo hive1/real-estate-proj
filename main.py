@@ -47,9 +47,11 @@ def main():
     addresses = []
     beds = []
     baths = []
+    sqft = []
+    acres = []
     avg = None
 
-    (images, prices, addresses, beds, baths, avg) = scrapeData(locationVar.get())
+    (images, prices, addresses, beds, baths, sqft, acres, avg) = scrapeData(locationVar.get())
 
     root = Tk() 
 
@@ -85,12 +87,11 @@ def main():
                    width = 30,
                    font = ('Fixedsys', 15)) # this value specifically keeps turning into a str and idk why
     textAvg.place(relx = .5, rely = .55, anchor='center')
+    avgPrice = '{:,}'.format(round(avg, 2))
+    textAvg.insert(END, f'Average price: ${avgPrice}')
     textAvg.insert(END, f'Average beds: {round(findAvg(beds), 2)}\n')
     textAvg.insert(END, f'Average baths: {round(findAvg(baths), 2)}\n')
     textAvg.config(state = DISABLED)
-
-    avgPrice = '{:,}'.format(round(avg, 2))
-    textAvg.insert(END, f'Average price: ${avgPrice}')
     
     textInfo = Text(info,
                    height = 45,
@@ -116,11 +117,13 @@ def main():
     textInfo.insert(END,"\n"+addresses[0])
     textInfo.insert(END,"\n"+beds[0])
     textInfo.insert(END,"\n"+baths[0])
+    textInfo.insert(END,"\n"+sqft[0])
+    textInfo.insert(END,"\n"+acres[0])
 
     '''Next & Back Buttons'''
-    next_button=Button(text="next",command=lambda:next(images, prices, addresses, beds, baths, house_image, textInfo))
+    next_button=Button(text="next",command=lambda:next(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
     next_button.place(relx = 0.37, rely = .1, anchor='center')
-    back_button=Button(text="back",command=lambda:back(images, prices, addresses, beds, baths, house_image, textInfo))
+    back_button=Button(text="back",command=lambda:back(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
     back_button.place(relx = 0.27, rely = .1, anchor='center')
 
 

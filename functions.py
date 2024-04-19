@@ -35,7 +35,7 @@ def main():
     print(findAvg(ex))
 
 i=0
-def next(image, price, address, bed, bath, house, text_box):
+def next(image, price, address, bed, bath, sqft, acres, house, text_box):
     global i
     i+=1
     if i>=(len(price)-1):
@@ -54,8 +54,10 @@ def next(image, price, address, bed, bath, house, text_box):
     text_box.insert(END,"\n"+address[i])
     text_box.insert(END,"\n"+bed[i])
     text_box.insert(END,"\n"+bath[i])
+    text_box.insert(END,"\n"+sqft[i])
+    text_box.insert(END,"\n"+acres[i])
 
-def back(image, price, address, bed, bath, house, text_box):
+def back(image, price, address, bed, bath, sqft, acres, house, text_box):
     global i
     print(i)
 
@@ -73,6 +75,8 @@ def back(image, price, address, bed, bath, house, text_box):
     text_box.insert(END,"\n"+address[i])
     text_box.insert(END,"\n"+bed[i])
     text_box.insert(END,"\n"+bath[i])
+    text_box.insert(END,"\n"+sqft[i])
+    text_box.insert(END,"\n"+acres[i])
 
 if __name__ == '__main__':
     main()
