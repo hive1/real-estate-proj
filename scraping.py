@@ -8,6 +8,9 @@ from selenium.webdriver.chrome.options import Options
 import time
 import json
 
+from bs4 import BeautifulSoup
+import requests
+
 
 def scrapeData(zip_code):
 
@@ -25,6 +28,10 @@ def scrapeData(zip_code):
     driver = webdriver.Chrome(options=chrome_options)
     driver.get("https://www.redfin.com")
 
+    WebDriverWait(driver, 5).until(
+        EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[6]/div[2]/div/section/div/div/div/div/div/div/div/div[2]/div/div/form/div/div/input'))
+    )
+
     button=driver.find_element(By.XPATH, '/html/body/div[1]/div[6]/div[2]/div/section/div/div/div/div/div/div/div/div[2]/div/div/form/div/div/input')
     button.click()
     button.send_keys(zip_code)
@@ -33,19 +40,43 @@ def scrapeData(zip_code):
     # This portion of the code is dedicated to finding the average 
     total=0
     counter=0
+    
+    '''This portion of the code is dedicated to finding the image URLs and then displaying them.
+        We had issues doing this with selenium so we decided using bs4 and then implementing that
+        src data through the tkinter canvas'''
+    
+    # response = requests.get(f'https://www.redfin.com/zipcode/{zip_code}')
+    # if response.status_code == 200:
+    #     soup = BeautifulSoup(response.text, 'html.parser')
+
 
     WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.CLASS_NAME, 'bp-Carousel__cell'))
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'div.MapHomeCardReact.MapHomeCard'))
     )
-    counter=0
-    bigClasses = driver.find_elements(By.CLASS_NAME, 'bp-Carousel__cell')
-    for element in bigClasses:
-        try:
-            image = element.find_element(By.XPATH, f'//*[@id="MapHomeCard_{counter}"]/div/div/div[2]/div/div/ul/li[1]/div').find_element(By.CSS_SELECTOR,'img.bp-Homecard__Photo--image')
-        except:
-            break
-        images.append(image.get_attribute('src'))
-        counter+=1
+
+    # counter=0
+    # bigClasses = driver.find_elements(By.ID, 'MapHomeCard_')
+    # x = 0
+    # for element in bigClasses:
+    #     try:
+    #         coverImages = element.find_elements(By.XPATH, f'//*[@id="MapHomeCard_{x}"]/div/div/div[2]/div/div/ul/li[1]/div/img')
+    #         source = coverImages[0].get_attribute('src')
+    #     except:
+    #         break
+
+    #     images.append(source)
+    #     x+=1
+    
+    images = []
+    results = driver.find_element(By.CSS_SELECTOR,'div.homes.summary').text
+    results = results.replace(" homes•","")
+    results = int(results)
+    for x in range(results):
+        mapHomeCard = driver.find_element(By.ID, f'MapHomeCard_{x}')
+        img_link = mapHomeCard.find_element(By.CLASS_NAME, 'bp-Homecard__Photo--image').get_attribute('src')
+        images.append(img_link)
+        x+=1
+    print(images)        
 
     WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.CLASS_NAME, "bp-Homecard__Content"))
@@ -71,4 +102,4 @@ def scrapeData(zip_code):
 
 '''this is only for debugging'''
 if __name__ == '__main__':
-    print(scrapeData('11934'))
+    scrapeData('11934')

@@ -2,7 +2,8 @@ import math
 from tkinter import *
 from PIL import Image, ImageTk
 import requests
-import json 
+import json
+from bs4 import BeautifulSoup
 
 # Find the averages of input lists, most likely containing string characters
 # Remember to ignore the values associated with '-'
@@ -32,6 +33,7 @@ def main():
           '— baths', '— baths', '— baths', '— baths']
     
     print(findAvg(ex))
+
 i=0
 def next(image, price, address, bed, bath, house, text_box):
     global i
@@ -45,6 +47,8 @@ def next(image, price, address, bed, bath, house, text_box):
     house.create_image(320/1.5,230/1.5, image=photo)
     house.image = photo
     house.place(relx = 0.27, rely = .303, anchor='center')
+
+    '''inserts the text data itself'''
     text_box.delete('1.0',END)
     text_box.insert(END,price[i])
     text_box.insert(END,"\n"+address[i])
@@ -53,6 +57,8 @@ def next(image, price, address, bed, bath, house, text_box):
 
 def back(image, price, address, bed, bath, house, text_box):
     global i
+    print(i)
+
     i-=1
     if i<0:
         i=(len(price)-1)

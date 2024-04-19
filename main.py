@@ -26,7 +26,7 @@ def main():
         root.destroy()
 
     basicFrame = Frame(root).pack()
-    inputLabel = Label(basicFrame, text = 'Please input the name or zip code of your desired location: ', font=('Kannada MW', 14))
+    inputLabel = Label(basicFrame, text = 'Please input the zip code of your desired location: ', font=('Kannada MW', 14))
     inputLabel.pack(side=TOP, pady=5, padx=5)
 
     # The following variable would be used for storing the post code or name of city that the user requests
