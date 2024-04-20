@@ -84,7 +84,7 @@ def main():
 
     textAvg = Text(average,
                    height = 35,
-                   width = 30,
+                   width = 28,
                    font = ('Fixedsys', 15)) # this value specifically keeps turning into a str and idk why
     textAvg.place(relx = .5, rely = .55, anchor='center')
 
@@ -98,9 +98,10 @@ def main():
     textAvg.config(state = DISABLED)
     
     textInfo = Text(info,
-                   height = 45,
-                   width = 60)
-    textInfo.place(relx = 0.73, rely = .5, anchor='center')
+                   height = 15,
+                   width = 95,
+                   font = ('Fixedsys', 15))
+    textInfo.place(relx = 0.5, rely = .8, anchor='center')
 
     # making everything 
     style = Style()
@@ -110,11 +111,11 @@ def main():
     url = images[0]
     image = Image.open(requests.get(url, stream=True).raw)
     photo = ImageTk.PhotoImage(image)
-    house_image = Canvas(info, width=640/1.5, 
-            height=460/1.5)
-    house_image.create_image(320/1.5,230/1.5, image=photo)
+    house_image = Canvas(info, width=640/1.2, 
+            height=460/1.2)
+    house_image.create_image(320/1.2,230/1.2, image=photo)
     house_image.image = photo
-    house_image.place(relx = 0.27, rely = .303, anchor='center')
+    house_image.place(relx = 0.29, rely = .303, anchor='center')
 
     '''Info Textbox'''
     textInfo.insert(END,prices[0])
@@ -126,9 +127,9 @@ def main():
 
     '''Next & Back Buttons'''
     next_button=Button(text="next",command=lambda:next(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
-    next_button.place(relx = 0.37, rely = .1, anchor='center')
+    next_button.place(relx = 0.38, rely = .58, anchor='center')
     back_button=Button(text="back",command=lambda:back(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
-    back_button.place(relx = 0.27, rely = .1, anchor='center')
+    back_button.place(relx = 0.07, rely = .58, anchor='center')
 
 
     root.mainloop()
