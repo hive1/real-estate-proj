@@ -87,10 +87,14 @@ def main():
                    width = 30,
                    font = ('Fixedsys', 15)) # this value specifically keeps turning into a str and idk why
     textAvg.place(relx = .5, rely = .55, anchor='center')
+
+    # This is where we insert data into the textbox
     avgPrice = '{:,}'.format(round(avg, 2))
-    textAvg.insert(END, f'Average price: ${avgPrice}')
+    textAvg.insert(END, f'Average price: ${avgPrice}\n')
     textAvg.insert(END, f'Average beds: {round(findAvg(beds), 2)}\n')
     textAvg.insert(END, f'Average baths: {round(findAvg(baths), 2)}\n')
+    textAvg.insert(END, f'Average Acreage: {round(findAvg(acres), 2)}\n')
+    textAvg.insert(END, f'Average Square Footage: {round(findAvg(sqft), 2)}')
     textAvg.config(state = DISABLED)
     
     textInfo = Text(info,
@@ -102,7 +106,7 @@ def main():
     style = Style()
     style.configure('W.TButton', font = ('calibri', 14, 'bold', 'underline'), foreground = 'blue')
 
-    '''House Image Shit'''
+    '''House Image'''
     url = images[0]
     image = Image.open(requests.get(url, stream=True).raw)
     photo = ImageTk.PhotoImage(image)
@@ -116,9 +120,9 @@ def main():
     textInfo.insert(END,prices[0])
     textInfo.insert(END,"\n"+addresses[0])
     textInfo.insert(END,"\n"+beds[0])
-    textInfo.insert(END,"\n"+baths[0])
-    textInfo.insert(END,"\n"+sqft[0])
-    textInfo.insert(END,"\n"+acres[0])
+    textInfo.insert(END,"\n"+baths[0] + "\n")
+    textInfo.insert(END,f"{sqft[0]}\n")
+    textInfo.insert(END,f"{acres[0]} acres\n")
 
     '''Next & Back Buttons'''
     next_button=Button(text="next",command=lambda:next(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
