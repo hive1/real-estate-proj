@@ -121,7 +121,7 @@ def main():
     textInfo.insert(END,"\n"+addresses[0])
     textInfo.insert(END,"\n"+beds[0])
     textInfo.insert(END,"\n"+baths[0] + "\n")
-    textInfo.insert(END,f"{sqft[0]} sqft\n")
+    textInfo.insert(END,f"{sqft[0]}\n")
     textInfo.insert(END,f"{acres[0]} acres\n")
 
     '''Next & Back Buttons'''

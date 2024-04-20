@@ -53,7 +53,7 @@ def next(image, price, address, bed, bath, sqft, acres, house, text_box):
     text_box.insert(END,"\n"+bed[i])
     text_box.insert(END,"\n"+bath[i])
     text_box.insert(END,"\n"+sqft[i])
-    text_box.insert(END,"\n"+acres[i])
+    text_box.insert(END,"\n"+acres[i]+" acres")
 
 def back(image, price, address, bed, bath, sqft, acres, house, text_box):
     global i
@@ -74,7 +74,7 @@ def back(image, price, address, bed, bath, sqft, acres, house, text_box):
     text_box.insert(END,"\n"+bed[i])
     text_box.insert(END,"\n"+bath[i])
     text_box.insert(END,"\n"+sqft[i])
-    text_box.insert(END,"\n"+acres[i])
+    text_box.insert(END,"\n"+acres[i]+" acres")
     
 
 if __name__ == '__main__':
