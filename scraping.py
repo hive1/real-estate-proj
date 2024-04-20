@@ -65,27 +65,43 @@ def scrapeData(zip_code):
         img_link = mapHomeCard.find_element(By.CLASS_NAME, 'bp-Homecard__Photo--image').get_attribute('src')
         images.append(img_link)
         x+=1
-    print(images)        
+    # print(images)        
 
     WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.CLASS_NAME, "bp-Homecard__Content"))
     )
+
+    y = 0
     for element in driver.find_elements(By.CLASS_NAME, "bp-Homecard__Content"):
+
         price = element.find_element(By.CSS_SELECTOR,"span.bp-Homecard__Price--value").text
         addresses.append(element.find_element(By.CSS_SELECTOR, "div.bp-Homecard__Address.flex.align-center.color-text-primary.font-body-xsmall-compact").text)
         beds.append(element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--beds.text-nowrap").text)
         baths.append(element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--baths.text-nowrap").text)
-        sqft.append(element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--sqft.text-nowrap").text)
-        acres.append(element.find_element(By.CSS_SELECTOR,"span.bp-Homecard__Stats--lotsize.text-ellipsis").text)
+        
+        acreDebug = element.find_element(By.CSS_SELECTOR,"span.bp-Homecard__Stats--lotsize.text-ellipsis").text
+        if len(acreDebug.split()) > 1:
+            if ',' in acreDebug:
+                pass
+            else:
+                acres.append(acreDebug.split()[0])
 
-        price_num=price
-        price_num=price_num.replace(",", "")
-        price_num=price_num.replace("$", "")
+        sqftDebug = element.find_element(By.CSS_SELECTOR, "span.bp-Homecard__Stats--sqft.text-nowrap").text
+        if len(sqftDebug.split()) > 1:
+            if '.' in sqftDebug.split()[0]:
+                pass
+            else:
+                sqft.append(sqftDebug)
+
+        price_num = price
+        price_num = price_num.replace(",", "")
+        price_num = price_num.replace("$", "")
 
         total += int(price_num)
         prices.append(price)
 
         counter+=1
+        y += 1
     
     driver.quit
     return images, prices, addresses, beds, baths, sqft, acres, (total/counter)
