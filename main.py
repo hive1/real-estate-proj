@@ -42,7 +42,7 @@ def main():
     root.mainloop()
 
     # Collecting data from the backend
-    images = ["https://ssl.cdn-redfin.com/photo/269/islphoto/917/genIslnoResize.3542917_2.jpg"]
+    images = []
     prices = []
     addresses = []
     beds = []
@@ -51,12 +51,12 @@ def main():
     acres = []
     avg = None
 
-    #(images, prices, addresses, beds, baths, sqft, acres, avg) = scrapeData(locationVar.get())
+    (images, prices, addresses, beds, baths, sqft, acres, avg) = scrapeData(locationVar.get())
 
     root = Tk() 
 
-    disWidth = 1000 #original 1600
-    disHeight = 700 #original 800
+    disWidth = 1000
+    disHeight = 700
     root.geometry(f'{disWidth}x{disHeight}')
     root.title('Real Estate Data')
 
@@ -89,7 +89,6 @@ def main():
     textAvg.place(relx = .5, rely = .55, anchor='center')
 
     # This is where we insert data into the textbox
-    '''
     avgPrice = '{:,}'.format(round(avg, 2))
     textAvg.insert(END, f'Average price: ${avgPrice}\n')
     textAvg.insert(END, f'Average beds: {round(findAvg(beds), 2)}\n')
@@ -97,10 +96,9 @@ def main():
     textAvg.insert(END, f'Average Acreage: {round(findAvg(acres), 2)}\n')
     textAvg.insert(END, f'Average Square Footage: {round(findAvg(sqft), 2)}')
     textAvg.config(state = DISABLED)
-    '''
     textInfo = Text(info,
-                   height = 12.4, #original 15
-                   width = 52, #original 95
+                   height = 12.4,
+                   width = 52,
                    font = ('Fixedsys', 15))
     textInfo.place(relx = 0.5, rely = .81, anchor='center')
 
@@ -109,30 +107,28 @@ def main():
     style.configure('W.TButton', font = ('calibri', 14, 'bold', 'underline'), foreground = 'blue')
 
     '''House Image'''
-    
     url = images[0]
     image = Image.open(requests.get(url, stream=True).raw)
     photo = ImageTk.PhotoImage(image)
     house_image = Canvas(info, width=776/1.5, 
-            height=500/1.5) #original 640/1.2, 460/1.2
+            height=500/1.5) 
     house_image.create_image(388/1.5,250/1.5, image=photo)
     house_image.image = photo
-    house_image.place(relx = 0.5, rely = .3, anchor='center') #original 0.29, 303
+    house_image.place(relx = 0.5, rely = .3, anchor='center')
     
     '''Info Textbox'''
-    '''
     textInfo.insert(END,prices[0])
     textInfo.insert(END,"\n"+addresses[0])
     textInfo.insert(END,"\n"+beds[0])
     textInfo.insert(END,"\n"+baths[0] + "\n")
     textInfo.insert(END,f"{sqft[0]}\n")
     textInfo.insert(END,f"{acres[0]} acres\n")
-    '''
+    
     '''Next & Back Buttons'''
     next_button=Button(text="next",command=lambda:next(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
-    next_button.place(relx = 0.54, rely = .59, anchor='center') #original 0.38
+    next_button.place(relx = 0.54, rely = .59, anchor='center') 
     back_button=Button(text="back",command=lambda:back(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
-    back_button.place(relx = 0.08, rely = .59, anchor='center') #original 0.07
+    back_button.place(relx = 0.08, rely = .59, anchor='center')
 
 
     root.mainloop()

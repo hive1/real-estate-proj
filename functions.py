@@ -44,7 +44,7 @@ def next(image, price, address, bed, bath, sqft, acres, house, text_box):
     photo = ImageTk.PhotoImage(img)
     house.create_image(320/1.2,230/1.2, image=photo)
     house.image = photo
-    house.place(relx = 0.29, rely = .303, anchor='center')
+    house.place(relx = 0.5, rely = .3, anchor='center')
 
     '''inserts the text data itself'''
     text_box.delete('1.0',END)
@@ -67,7 +67,7 @@ def back(image, price, address, bed, bath, sqft, acres, house, text_box):
     photo = ImageTk.PhotoImage(img)
     house.create_image(320/1.2,230/1.2, image=photo)
     house.image = photo
-    house.place(relx = 0.29, rely = .303, anchor='center')
+    house.place(relx = 0.5, rely = .3, anchor='center')
     text_box.delete('1.0',END)
     text_box.insert(END,price[i])
     text_box.insert(END,"\n"+address[i])
