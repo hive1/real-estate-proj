@@ -131,6 +131,10 @@ def main():
     back_button=Button(text="back",command=lambda:back(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
     back_button.place(relx = 0.08, rely = .59, anchor='center')
 
+    print("images:",len(images))
+    print("addresses:",len(addresses))
+    print("prices:",len(prices))
+
 
     root.mainloop()
 
