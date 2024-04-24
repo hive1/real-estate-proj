@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 import requests
 import json
 from scraping import scrapeData
-from functions import findAvg, next
+from functions import findAvg, next, back
 
 def main():
 
@@ -26,16 +26,12 @@ def main():
         root.destroy()
 
     basicFrame = Frame(root).pack()
-    inputLabel = Label(basicFrame, text = 'Please input the name or zip code of your desired location: ', font=('Kannada MW', 14))
+    inputLabel = Label(basicFrame, text = 'Please input the zip code of your desired location: ', font=('Kannada MW', 14))
     inputLabel.pack(side=TOP, pady=5, padx=5)
 
     # The following variable would be used for storing the post code or name of city that the user requests
     locationVar = StringVar(basicFrame, value = None)
     Entry(basicFrame, textvariable=locationVar).pack(pady=10)
-
-    # Creating a style variable
-    # style = Style()
-    # style.configure('W.TButton', font = ('calibri', 10, 'bold', 'underline'), foreground = 'red')
 
     # goofy submit button
     submitButton = Button(basicFrame, text='SUBMIT')
@@ -46,25 +42,28 @@ def main():
     root.mainloop()
 
     # Collecting data from the backend
+    images = []
     prices = []
     addresses = []
     beds = []
     baths = []
+    sqft = []
+    acres = []
     avg = None
 
-    (prices, addresses, beds, baths, avg) = scrapeData(locationVar.get())
+    (images, prices, addresses, beds, baths, sqft, acres, avg) = scrapeData(locationVar.get())
 
     root = Tk() 
 
-    disWidth = 1600
-    disHeight = 800
+    disWidth = 1000
+    disHeight = 700
     root.geometry(f'{disWidth}x{disHeight}')
     root.title('Real Estate Data')
 
     '''starting the construction of the average frame to the right of the screen'''
     average = Frame(root, 
                     height = (disHeight-20), 
-                    width = (disWidth/5), 
+                    width = (1600/5), 
                     highlightcolor = 'black', 
                     highlightbackground = 'black', 
                     highlightthickness = 5)
@@ -72,7 +71,7 @@ def main():
 
     info = Frame(root, 
                     height = (disHeight-20), 
-                    width = (disWidth-(disWidth/5+30)), 
+                    width = (1600-(1600/5+30)), 
                     highlightcolor = 'black', 
                     highlightbackground = 'black', 
                     highlightthickness = 5)
@@ -84,30 +83,53 @@ def main():
     avgHead.place(relx = 0.5, rely = 0.05, anchor = 'center')
 
     textAvg = Text(average,
-                   height = 40,
-                   width = 30,
-                   font = ('Fixedsys', 12)) # this value specifically keeps turning into a str and idk why
-    textAvg.place(relx = .5, rely = .53, anchor='center')
+                   height = 30,
+                   width = 28,
+                   font = ('Fixedsys', 15)) # this value specifically keeps turning into a str and idk why
+    textAvg.place(relx = .5, rely = .55, anchor='center')
+
+    # This is where we insert data into the textbox
+    avgPrice = '{:,}'.format(round(avg, 2))
+    textAvg.insert(END, f'Average price: ${avgPrice}\n')
     textAvg.insert(END, f'Average beds: {round(findAvg(beds), 2)}\n')
     textAvg.insert(END, f'Average baths: {round(findAvg(baths), 2)}\n')
-                   
-    
+    textAvg.insert(END, f'Average Acreage: {round(findAvg(acres), 2)}\n')
+    textAvg.insert(END, f'Average Square Footage: {round(findAvg(sqft), 2)}')
+    textAvg.config(state = DISABLED)
     textInfo = Text(info,
-                   height = 45,
-                   width = 60)
-    textInfo.place(relx = 0.73, rely = .5, anchor='center')
-    
-    url = "https://ssl.cdn-redfin.com/photo/269/islphoto/927/genIslnoResize.3543927_0.jpg"
+                   height = 12.4,
+                   width = 52,
+                   font = ('Fixedsys', 15))
+    textInfo.place(relx = 0.5, rely = .81, anchor='center')
+
+    # making everything 
+    style = Style()
+    style.configure('W.TButton', font = ('calibri', 14, 'bold', 'underline'), foreground = 'blue')
+
+    '''House Image'''
+    url = images[0]
     image = Image.open(requests.get(url, stream=True).raw)
     photo = ImageTk.PhotoImage(image)
-    house_image = Canvas(info, width=640/1.5, 
-            height=460/1.5)
-    house_image.create_image(320/1.5,230/1.5, image=photo)
+    house_image = Canvas(info, width=776/1.5, 
+            height=500/1.5) 
+    house_image.create_image(388/1.5,250/1.5, image=photo)
     house_image.image = photo
-    house_image.place(relx = 0.27, rely = .303, anchor='center')
+    house_image.place(relx = 0.5, rely = .3, anchor='center')
+    
+    '''Info Textbox'''
     textInfo.insert(END,prices[0])
-    next_button=Button(text="next",command=lambda:next(prices,textInfo))
-    next_button.place(relx = 0.27, rely = .1, anchor='center')
+    textInfo.insert(END,"\n"+addresses[0])
+    textInfo.insert(END,"\n"+beds[0])
+    textInfo.insert(END,"\n"+baths[0] + "\n")
+    textInfo.insert(END,f"{sqft[0]}\n")
+    textInfo.insert(END,f"{acres[0]} acres\n")
+    
+    '''Next & Back Buttons'''
+    next_button=Button(text="next",command=lambda:next(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
+    next_button.place(relx = 0.54, rely = .59, anchor='center') 
+    back_button=Button(text="back",command=lambda:back(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
+    back_button.place(relx = 0.08, rely = .59, anchor='center')
+
 
     root.mainloop()
 
