@@ -30,7 +30,7 @@ def scrapeData(zip_code):
     driver = webdriver.Chrome(options=chrome_options)
     driver.get("https://www.redfin.com")
 
-    WebDriverWait(driver, 5).until(
+    WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[6]/div[2]/div/section/div/div/div/div/div/div/div/div[2]/div/div/form/div/div/input'))
     )
 
@@ -52,7 +52,7 @@ def scrapeData(zip_code):
     #     soup = BeautifulSoup(response.text, 'html.parser')
 
 
-    WebDriverWait(driver, 5).until(
+    WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, 'div.MapHomeCardReact.MapHomeCard'))
     )
 
@@ -69,7 +69,7 @@ def scrapeData(zip_code):
     except:
         pass      
 
-    WebDriverWait(driver, 5).until(
+    WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.CLASS_NAME, "bp-Homecard__Content"))
     )
 

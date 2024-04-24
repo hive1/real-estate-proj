@@ -41,8 +41,9 @@ def next(image, price, address, bed, bath, sqft, acres, house, text_box):
     house.forget()
     url = image[i]
     img = Image.open(requests.get(url, stream=True).raw)
-    photo = ImageTk.PhotoImage(img)
-    house.create_image(320/1.2,230/1.2, image=photo)
+    resized_image=img.resize((int(776/1.5),int(500/1.5)))
+    photo = ImageTk.PhotoImage(resized_image)
+    house.create_image(0,0, image=photo, anchor=NW)
     house.image = photo
     house.place(relx = 0.5, rely = .3, anchor='center')
 
@@ -57,15 +58,15 @@ def next(image, price, address, bed, bath, sqft, acres, house, text_box):
 
 def back(image, price, address, bed, bath, sqft, acres, house, text_box):
     global i
-    print(i)
-
     i-=1
     if i<0:
-        i=(len(price)-1)
+        i=len(price)-1
+    house.forget()
     url = image[i]
     img = Image.open(requests.get(url, stream=True).raw)
-    photo = ImageTk.PhotoImage(img)
-    house.create_image(320/1.2,230/1.2, image=photo)
+    resized_image=img.resize((int(776/1.5),int(500/1.5)))
+    photo = ImageTk.PhotoImage(resized_image)
+    house.create_image(0,0, image=photo, anchor=NW)
     house.image = photo
     house.place(relx = 0.5, rely = .3, anchor='center')
     text_box.delete('1.0',END)

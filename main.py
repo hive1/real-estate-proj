@@ -109,10 +109,11 @@ def main():
     '''House Image'''
     url = images[0]
     image = Image.open(requests.get(url, stream=True).raw)
-    photo = ImageTk.PhotoImage(image)
+    resized_image=image.resize((int(776/1.5),int(500/1.5)))
+    photo = ImageTk.PhotoImage(resized_image)
     house_image = Canvas(info, width=776/1.5, 
             height=500/1.5) 
-    house_image.create_image(388/1.5,250/1.5, image=photo)
+    house_image.create_image(0,0,image=photo,anchor=NW)
     house_image.image = photo
     house_image.place(relx = 0.5, rely = .3, anchor='center')
     
