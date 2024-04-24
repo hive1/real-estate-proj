@@ -60,14 +60,14 @@ def scrapeData(zip_code):
     results = driver.find_element(By.CSS_SELECTOR,'div.homes.summary').text
     results = results.replace(" homes•","")
     results = int(results)
-    try:
-        for x in range(results):
+    for x in range(results):
+        try:
             mapHomeCard = driver.find_element(By.ID, f'MapHomeCard_{x}')
             img_link = mapHomeCard.find_element(By.CLASS_NAME, 'bp-Homecard__Photo--image').get_attribute('src')
             images.append(img_link)
             x+=1
-    except:
-        pass      
+        except:
+            print("error ",x)      
 
     WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.CLASS_NAME, "bp-Homecard__Content"))
