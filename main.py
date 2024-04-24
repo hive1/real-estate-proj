@@ -54,7 +54,8 @@ def main():
     (images, prices, addresses, beds, baths, sqft, acres, avg) = scrapeData(locationVar.get())
 
     root = Tk() 
-
+    root.resizable(0, 0)
+    
     disWidth = 1000
     disHeight = 700
     root.geometry(f'{disWidth}x{disHeight}')
@@ -96,6 +97,7 @@ def main():
     textAvg.insert(END, f'Average Acreage: {round(findAvg(acres), 2)}\n')
     textAvg.insert(END, f'Average Square Footage: {round(findAvg(sqft), 2)}')
     textAvg.config(state = DISABLED)
+
     textInfo = Text(info,
                    height = 12.4,
                    width = 52,
