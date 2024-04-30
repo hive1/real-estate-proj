@@ -24,17 +24,18 @@ def scrapeData(zip_code):
 
     '''Yea but imagine if we didn't have to SEE selenium work'''
     chrome_options = Options()
-    chrome_options.add_argument("--disable-gpu") # Disables GPU hardware acceleration
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--blink-settings=imagesEnabled=false") # Disables GPU hardware acceleration
     #chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
     #chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
     driver = webdriver.Chrome(options=chrome_options)
     driver.get("https://www.redfin.com")
 
     WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[6]/div[2]/div/section/div/div/div/div/div/div/div/div[2]/div/div/form/div/div/input'))
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'input#search-box-input.search-input-box'))
     )
 
-    button=driver.find_element(By.XPATH, '/html/body/div[1]/div[6]/div[2]/div/section/div/div/div/div/div/div/div/div[2]/div/div/form/div/div/input')
+    button=driver.find_element(By.CSS_SELECTOR, 'input#search-box-input.search-input-box')
     button.click()
     button.send_keys(zip_code)
     button.send_keys(Keys.ENTER)
@@ -56,7 +57,28 @@ def scrapeData(zip_code):
         EC.presence_of_element_located((By.CSS_SELECTOR, 'div.MapHomeCardReact.MapHomeCard'))
     )
 
-    images = []
+    results_count = driver.find_element(By.CSS_SELECTOR, 'div.homes.summary').text
+    results_count = int(results_count.replace(" homes•", ""))
+    scroll_amount = 1000
+    scroll = scroll_amount
+    last_scroll_position = driver.execute_script("return window.pageYOffset;")
+    while True:
+        scroll += scroll_amount
+        driver.execute_script(f"window.scrollTo(0, {scroll});")
+        time.sleep(0.5)  # Adjust pause time as needed
+        new_scroll_position = driver.execute_script("return window.pageYOffset;")
+        if new_scroll_position == last_scroll_position:
+            break
+        last_scroll_position = new_scroll_position
+
+    for x in range(results_count):
+        try:
+            map_home_card = driver.find_element(By.ID, f'MapHomeCard_{x}')
+            img_link = map_home_card.find_element(By.CSS_SELECTOR, 'img.bp-Homecard__Photo--image').get_attribute('src')
+            images.append(img_link)
+        except Exception as e:
+            print("Error fetching image:", e)
+    '''
     results = driver.find_element(By.CSS_SELECTOR,'div.homes.summary').text
     results = results.replace(" homes•","")
     results = int(results)
@@ -68,7 +90,7 @@ def scrapeData(zip_code):
             x+=1
         except:
             print("error ",x)      
-
+    '''
     WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.CLASS_NAME, "bp-Homecard__Content"))
     )
