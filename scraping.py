@@ -44,25 +44,13 @@ def scrapeData(zip_code):
     total=0
     counter=0
     
-    '''This portion of the code is dedicated to finding the image URLs and then displaying them.
-        We had issues doing this with selenium so we decided using bs4 and then implementing that
-        src data through the tkinter canvas'''
-    
-    # response = requests.get(f'https://www.redfin.com/zipcode/{zip_code}')
-    # if response.status_code == 200:
-    #     soup = BeautifulSoup(response.text, 'html.parser')
-
-
-    WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'div.MapHomeCardReact.MapHomeCard'))
-    )
-
+    #Scrolling due to lazy loading
     results_count = driver.find_element(By.CSS_SELECTOR, 'div.homes.summary').text
     results_count = int(results_count.replace(" homes•", ""))
     scroll_amount = 1000
     scroll = scroll_amount
     last_scroll_position = driver.execute_script("return window.pageYOffset;")
-    while True:
+    while True: #Scrolls until it reaches the bottom of the page
         scroll += scroll_amount
         driver.execute_script(f"window.scrollTo(0, {scroll});")
         time.sleep(0.5)  # Adjust pause time as needed
@@ -71,6 +59,7 @@ def scrapeData(zip_code):
             break
         last_scroll_position = new_scroll_position
 
+    #image scraping
     for x in range(results_count):
         try:
             map_home_card = driver.find_element(By.ID, f'MapHomeCard_{x}')
@@ -78,19 +67,7 @@ def scrapeData(zip_code):
             images.append(img_link)
         except Exception as e:
             print("Error fetching image:", e)
-    '''
-    results = driver.find_element(By.CSS_SELECTOR,'div.homes.summary').text
-    results = results.replace(" homes•","")
-    results = int(results)
-    for x in range(results):
-        try:
-            mapHomeCard = driver.find_element(By.ID, f'MapHomeCard_{x}')
-            img_link = mapHomeCard.find_element(By.CLASS_NAME, 'bp-Homecard__Photo--image').get_attribute('src')
-            images.append(img_link)
-            x+=1
-        except:
-            print("error ",x)      
-    '''
+    
     WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.CLASS_NAME, "bp-Homecard__Content"))
     )
