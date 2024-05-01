@@ -63,7 +63,7 @@ def main():
 
     '''starting the construction of the average frame to the right of the screen'''
     average = Frame(root, 
-                    height = (disHeight-20), 
+                    height = (disHeight/2), 
                     width = (1600/5), 
                     highlightcolor = 'black', 
                     highlightbackground = 'black', 
@@ -78,16 +78,17 @@ def main():
                     highlightthickness = 5)
     info.pack(side='left', padx=30, pady=30)
 
+
     avgHead = Label(average, 
                     text = 'Averages',
                     font = ('Fixedsys', 25))
     avgHead.place(relx = 0.5, rely = 0.05, anchor = 'center')
 
     textAvg = Text(average,
-                   height = 30,
+                   height = 12.4,
                    width = 28,
                    font = ('Fixedsys', 15)) # this value specifically keeps turning into a str and idk why
-    textAvg.place(relx = .5, rely = .55, anchor='center')
+    textAvg.place(relx = 0, rely = 0, anchor='nw')
 
     # This is where we insert data into the textbox
     avgPrice = '{:,}'.format(round(avg, 2))
