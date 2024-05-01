@@ -45,6 +45,9 @@ def scrapeData(zip_code):
     counter=0
     
     #Scrolling due to lazy loading
+    WebDriverWait(driver, 5).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'div.homes.summary'))
+    )
     results_count = driver.find_element(By.CSS_SELECTOR, 'div.homes.summary').text
     results_count = int(results_count.replace(" homes•", ""))
     scroll_amount = 1000
