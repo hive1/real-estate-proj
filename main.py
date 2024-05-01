@@ -68,22 +68,21 @@ def main():
     root.title('Real Estate Data')
 
     '''starting the construction of the average frame to the right of the screen'''
-    '''
     average = Frame(root, 
                     height = (disHeight/2.5), 
                     width = (1600/5), 
                     highlightcolor = 'black', 
                     highlightbackground = 'black', 
                     highlightthickness = 5)
-    average.pack(side='right')
-    '''
+    # average.pack(side='top', anchor = 'ne')
+
     rankFrame = Frame(root, 
                     height = (disHeight/2.5), 
                     width = (1600/5), 
                     highlightcolor = 'black', 
                     highlightbackground = 'black', 
                     highlightthickness = 5)
-    rankFrame.place(anchor='ne',relx=0,rely=0)
+    # rankFrame.pack(side='bottom', anchor = 'se')
 
     info = Frame(root, 
                     height = (disHeight-20), 
@@ -91,7 +90,7 @@ def main():
                     highlightcolor = 'black', 
                     highlightbackground = 'black', 
                     highlightthickness = 5)
-    info.pack(side='left', padx=5, pady=30)
+    info.pack(side='left', padx = 30, pady = 30, expand = False)
 
     avgHead = Label(average, 
                     text = 'Averages',
