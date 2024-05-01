@@ -62,46 +62,46 @@ def main():
     root = Tk() 
     root.resizable(0, 0)
     
-    disWidth = 1000
+    disWidth = 900
     disHeight = 700
     root.geometry(f'{disWidth}x{disHeight}')
     root.title('Real Estate Data')
 
-    '''starting the construction of the average frame to the right of the screen'''
-    average = Frame(root, 
-                    height = (disHeight/2.5), 
-                    width = (1600/5), 
-                    highlightcolor = 'black', 
-                    highlightbackground = 'black', 
-                    highlightthickness = 5)
-    # average.pack(side='top', anchor = 'ne')
-
-    rankFrame = Frame(root, 
-                    height = (disHeight/2.5), 
-                    width = (1600/5), 
-                    highlightcolor = 'black', 
-                    highlightbackground = 'black', 
-                    highlightthickness = 5)
-    # rankFrame.pack(side='bottom', anchor = 'se')
-
     info = Frame(root, 
                     height = (disHeight-20), 
-                    width = (1600-(1600/5+30)), 
+                    width = (550), #1600-1600/5+30
                     highlightcolor = 'black', 
                     highlightbackground = 'black', 
                     highlightthickness = 5)
-    info.pack(side='left', padx = 30, pady = 30, expand = False)
+    info.pack(side='left',anchor='w',padx=(10,0),pady=10)
+    '''starting the construction of the average frame to the right of the screen'''
+    average = Frame(root, 
+                    height = (disHeight/2.5+45), 
+                    width = (1600/5), 
+                    highlightcolor = 'black', 
+                    highlightbackground = 'black', 
+                    highlightthickness = 5)
+    average.pack(side='bottom', anchor = 'se',padx=10,pady=10)
+
+    rankFrame = Frame(root, 
+                    height = (disHeight/2.5+60), 
+                    width = (1600/5), 
+                    highlightcolor = 'black', 
+                    highlightbackground = 'black', 
+                    highlightthickness = 5)
+    rankFrame.pack(side='top', anchor = 'ne',padx=10,pady=(10,0))
+
 
     avgHead = Label(average, 
                     text = 'Averages',
                     font = ('Fixedsys', 25))
-    avgHead.place(relx = 0.5, rely = 0.15, anchor = 'center')
+    avgHead.place(relx = 0.5, rely = 0.08, anchor = 'center')
 
     textAvg = Text(average,
-                   height = 12.4,
-                   width = 36,
+                   height = 13.5,
+                   width = 28,
                    font = ('Fixedsys', 15)) # this value specifically keeps turning into a str and idk why
-    textAvg.place(relx = 0.03, rely = 0.3, anchor='nw')
+    textAvg.place(relx = 0.03, rely = 0.16, anchor='nw')
 
     # Implementation of our ranking systems involving comparison with the rest of our data
     avgPrice = '{:,}'.format(round(avg, 2))
@@ -150,9 +150,9 @@ def main():
     
     '''Next & Back Buttons'''
     next_button=Button(text="next",command=lambda:next(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
-    next_button.place(relx = 0.54, rely = .59, anchor='center') 
+    next_button.place(relx = 0.57, rely = .59, anchor='center') 
     back_button=Button(text="back",command=lambda:back(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
-    back_button.place(relx = 0.08, rely = .59, anchor='center')
+    back_button.place(relx = 0.06, rely = .59, anchor='center')
 
     print("images:",len(images))
     print("addresses:",len(addresses))
