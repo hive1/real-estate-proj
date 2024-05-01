@@ -29,16 +29,16 @@ def scrapeData(zip_code):
     #chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
     #chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
     driver = webdriver.Chrome(options=chrome_options)
-    driver.get("https://www.redfin.com")
+    driver.get(f"https://www.redfin.com/zipcode/{zip_code}")
 
-    WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'input#search-box-input.search-input-box'))
-    )
+    # WebDriverWait(driver, 5).until(
+    #     EC.presence_of_element_located((By.CSS_SELECTOR, 'input#search-box-input.search-input-box'))
+    # )
 
-    button=driver.find_element(By.CSS_SELECTOR, 'input#search-box-input.search-input-box')
-    button.click()
-    button.send_keys(zip_code)
-    button.send_keys(Keys.ENTER)
+    # button=driver.find_element(By.CSS_SELECTOR, 'input#search-box-input.search-input-box')
+    # button.click()
+    # button.send_keys(zip_code)
+    # button.send_keys(Keys.ENTER)
 
     # This portion of the code is dedicated to finding the average 
     total=0
