@@ -8,43 +8,42 @@ from functions import findAvg, next, back, rankImage, removeDollarSign, arrowRep
 
 def main():
 
-
-    # InpWidth = 512
-    # InpHeight = 250
-
-    # i thought adding an icon would be cute, although perhaps not necessary
-    # p1 = PhotoImage(file = 'haus.png')
-    # root.iconphoto(False, p1)
+    InpWidth = 512
+    InpHeight = 250
 
     # # Creating a root window for main operations
-    # root = Tk()
+    root = Tk()
 
     # # Stops the window from being resizable
-    # root.resizable(0, 0)
+    root.resizable(0, 0)
 
     # # root window 
-    # root.title("Real Estate Collector v1")
-    # root.geometry(f'{InpWidth}x{InpHeight}')
+    root.title("Real Estate Finder - Zip")
+    root.geometry(f'{InpWidth}x{InpHeight}')
 
-    # def displayData(textarg):
-    #     Label(basicFrame, text=textarg).pack()
-    #     root.destroy()
+    # i thought adding an icon would be cute, although perhaps not necessary
+    p1 = PhotoImage(file = 'haus.png')
+    root.iconphoto(False, p1)
 
-    # basicFrame = Frame(root).pack()
-    # inputLabel = Label(basicFrame, text = 'Please input the zip code of your desired location: ', font=('Kannada MW', 14))
-    # inputLabel.pack(side=TOP, pady=5, padx=5)
+    def displayData(textarg):
+        Label(basicFrame, text=textarg).pack()
+        root.destroy()
+
+    basicFrame = Frame(root).pack()
+    inputLabel = Label(basicFrame, text = 'Please input the zip code of your desired location: ', font=('Kannada MW', 14))
+    inputLabel.pack(side=TOP, pady=5, padx=5)
 
     # # The following variable would be used for storing the post code or name of city that the user requests
-    # locationVar = StringVar(basicFrame, value = None)
-    # Entry(basicFrame, textvariable=locationVar).pack(pady=10)
+    locationVar = StringVar(basicFrame, value = None)
+    Entry(basicFrame, textvariable=locationVar).pack(pady=10)
 
     # # goofy submit button
-    # submitButton = Button(basicFrame, text='SUBMIT')
-    # submitButton.configure(command=lambda: displayData(locationVar.get()))
-    # submitButton.configure(relief=RAISED, padx=1.5, pady=1.5, font=('Kannada MW', '12'))
-    # submitButton.pack()
+    submitButton = Button(basicFrame, text='SUBMIT')
+    submitButton.configure(command=lambda: displayData(locationVar.get()))
+    submitButton.configure(relief=RAISED, padx=1.5, pady=1.5, font=('Kannada MW', '12'))
+    submitButton.pack()
 
-    # root.mainloop()
+    root.mainloop()
 
     # Collecting data from the backend
     images = []
@@ -56,8 +55,7 @@ def main():
     acres = []
     avg = None
 
-    #(images, prices, addresses, beds, baths, sqft, acres, avg) = scrapeData(locationVar.get())
-    (images, prices, addresses, beds, baths, sqft, acres, avg) = scrapeData('11978')
+    (images, prices, addresses, beds, baths, sqft, acres, avg) = scrapeData(locationVar.get())
 
     root = Tk()
 
@@ -232,7 +230,11 @@ def main():
                                                                        avgPrice, avgBeds, avgBaths, avgSqft, avgAcres,
                                                                        prices, beds, baths, sqft, acres)])
     next_button.place(relx = 0.57, rely = .59, anchor='center') 
-    back_button=Button(text="back",command=lambda:back(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
+    back_button=Button(text="back",command=lambda: [back(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo),
+                                                         arrowReplacer(rankFrame, 
+                                                                       ratingImage, bedsRank, bathsRank, sqftRank, acreRank,
+                                                                       avgPrice, avgBeds, avgBaths, avgSqft, avgAcres,
+                                                                       prices, beds, baths, sqft, acres)])
     back_button.place(relx = 0.06, rely = .59, anchor='center')
 
     print("images: ", len(images))
