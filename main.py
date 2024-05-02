@@ -4,13 +4,17 @@ from PIL import Image, ImageTk
 import requests
 import json
 from scraping import scrapeData
-from functions import findAvg, next, back, rankImage
+from functions import findAvg, next, back, rankImage, removeDollarSign, arrowReplacer
 
 def main():
 
 
     # InpWidth = 512
     # InpHeight = 250
+
+    # i thought adding an icon would be cute, although perhaps not necessary
+    # p1 = PhotoImage(file = 'haus.png')
+    # root.iconphoto(False, p1)
 
     # # Creating a root window for main operations
     # root = Tk()
@@ -53,15 +57,20 @@ def main():
     avg = None
 
     #(images, prices, addresses, beds, baths, sqft, acres, avg) = scrapeData(locationVar.get())
-    (images, prices, addresses, beds, baths, sqft, acres, avg) = scrapeData('11934')
+    (images, prices, addresses, beds, baths, sqft, acres, avg) = scrapeData('11978')
 
-    root = Tk() 
+    root = Tk()
+
+    p1 = PhotoImage(file = 'haus.png')
+    root.iconphoto(False, p1)
+
     root.resizable(0, 0)
     
     disWidth = 900
     disHeight = 700
     root.geometry(f'{disWidth}x{disHeight}')
-    root.title('Real Estate Data')
+    root.title('Real Estate Finder')
+
 
     info = Frame(root, 
                     height = (disHeight-20), 
@@ -95,10 +104,10 @@ def main():
 
     rankInstructions = Label(rankFrame,
                              text = 'This ranking system is based how metric averages below and how the current listing compares to such. The arrows represent if the value is above or below its respective average.',
-                             wraplength = 250, 
+                             wraplength = 300, 
                              justify = 'center',
                              font = ('Fixedsys', 10))
-    rankInstructions.place(relx = 0.1, rely = 0.12, anchor = 'nw')
+    rankInstructions.place(relx = 0.03 , rely = 0.12, anchor = 'nw')
     
     '''
     TODO:
@@ -124,38 +133,66 @@ def main():
     avgAcres = round(findAvg(acres), 2)
     avgSqft = round(findAvg(sqft), 2)
 
-    # gotta start from somewhere, I suppose
+    
+    '''Placing the arrows'''
+
     Label(rankFrame, 
           text = 'Price: ',
-          font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.49, anchor = 'nw')
-    priceRank = rankImage(rankFrame, avg, prices[0])
-    priceRank.place(anchor = 'nw', relx = 0.38, rely = 0.49)
+          font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.42, anchor = 'nw')
+    # If the price is less than the average price, this is a GOOD thing so I made special arrows for that
+    if removeDollarSign(prices[0]) < float(avgPrice.replace(',', '')):
+        img = (Image.open('arrows/greenarrowdown.png')).resize((40, 40), Image.ANTIALIAS)
+    else:
+        img = (Image.open('arrows/redarrowup.png')).resize((40, 40), Image.ANTIALIAS)
+    img = ImageTk.PhotoImage(img)
+    ratingImage = Canvas(rankFrame, width = 40, height = 40)
+    ratingImage.create_image(0, 0, image = img, anchor = NW)
+    ratingImage.image = img
+    ratingImage.place(anchor = 'nw', relx = 0.36, rely = 0.42)
     
+    Label(rankFrame,
+          text = 'Beds: ',
+          font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.54, anchor = 'nw')
+    bedsRank = rankImage(rankFrame, avgBeds, float((beds[0]).split()[0]))
+    bedsRank.place(anchor = 'nw', relx = 0.36, rely = 0.54)
+
     Label(rankFrame, 
           text = 'Baths: ',
-          font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.58, anchor = 'nw')
-    bathsRank = rankImage(rankFrame, avg, baths[0])
-    bathsRank.place(anchor = 'nw', relx = 0.38, rely = 0.59)
-
+          font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.66, anchor = 'nw')
+    bathsRank = rankImage(rankFrame, avgBaths, float((baths[0]).split()[0]))
+    bathsRank.place(anchor = 'nw', relx = 0.36, rely = 0.66)
     
     Label(rankFrame, 
           text = 'Acreage: ',
-          font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.67, anchor = 'nw')
-    
+          font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.78, anchor = 'nw')
+    acreRank = rankImage(rankFrame, avgAcres, float(acres[0]))
+    acreRank.place(anchor = 'nw', relx = 0.46, rely = 0.78)
+
     Label(rankFrame, 
           text = 'Square Footage: ',
-          font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.77, anchor = 'nw')
+          font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.88, anchor = 'nw')
+    # the sqft[0] parameter is kinda annoying because it has a comma and "sq ft" at the end
+    sqftValue = ''.join(c for c in sqft[0] if c.isdigit())
 
-    Label(rankFrame, 
-            text = 'Beds: ',
-            font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.86, anchor = 'nw')
+      # if the sqftValue is empty after the last filter, it would mean the data could not be retrieved
+    if sqftValue == '':
+      img = (Image.open('arrows/x.png')).resize((20, 20), Image.ANTIALIAS)
+      img = ImageTk.PhotoImage(img)
+      x = Canvas(rankFrame, width = 20, height = 20)
+      x.create_image(0, 0, image = img, anchor = NW)
+      x.image = img
+      x.place(anchor = 'nw', relx = 0.82, rely = 0.86)
+    else:
+      sqftValue = float(sqftValue)
+      sqftRank = rankImage(rankFrame, avgSqft, sqftValue)
+      sqftRank.place(anchor = 'nw', relx = 0.82, rely = 0.86)
 
     # This is where we insert data into the textbox
-    textAvg.insert(END, f'Average price: ${avgPrice}\n')
-    textAvg.insert(END, f'Average beds: {avgBeds}\n')
-    textAvg.insert(END, f'Average baths: {avgBaths}\n')
-    textAvg.insert(END, f'Average Acreage: {avgAcres}\n')
+    textAvg.insert(END, f'Average Price: ${avgPrice}\n')
+    textAvg.insert(END, f'Average Beds: {avgBeds}\n')
+    textAvg.insert(END, f'Average Baths: {avgBaths}\n')
     textAvg.insert(END, f'Average Square Footage: {avgSqft}')
+    textAvg.insert(END, f'Average Acreage: {avgAcres}\n')
     textAvg.config(state = DISABLED)
 
     textInfo = Text(info,
@@ -180,8 +217,8 @@ def main():
     house_image.place(relx = 0.5, rely = .3, anchor='center')
     
     '''Info Textbox'''
-    textInfo.insert(END,prices[0])
-    textInfo.insert(END,"\n"+addresses[0])
+    textInfo.insert(END,addresses[0])
+    textInfo.insert(END,"\n"+prices[0])
     textInfo.insert(END,"\n"+beds[0])
     textInfo.insert(END,"\n"+baths[0] + "\n")
     textInfo.insert(END,f"{sqft[0]}\n")
@@ -189,7 +226,11 @@ def main():
 
     
     '''Next & Back Buttons'''
-    next_button=Button(text="next",command=lambda:next(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
+    next_button=Button(text="next",command=lambda: [next(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo),
+                                                         arrowReplacer(rankFrame, 
+                                                                       ratingImage, bedsRank, bathsRank, sqftRank, acreRank,
+                                                                       avgPrice, avgBeds, avgBaths, avgSqft, avgAcres,
+                                                                       prices, beds, baths, sqft, acres)])
     next_button.place(relx = 0.57, rely = .59, anchor='center') 
     back_button=Button(text="back",command=lambda:back(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
     back_button.place(relx = 0.06, rely = .59, anchor='center')
@@ -198,9 +239,7 @@ def main():
     print("addresses: ", len(addresses))
     print("prices: ", len(prices))
 
-
     root.mainloop()
-
 
 if __name__ == '__main__':
     main()

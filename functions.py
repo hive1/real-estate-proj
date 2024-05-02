@@ -32,37 +32,34 @@ def findAvg(coll: list) -> int:
 
 
 # This function is dedicated to making parameters passed into 
-def makeUsable(value):
-    if "$" in value:
-        return int((value[1:]).replace(',', ''))
-    elif 
+def removeDollarSign(value):
+    return float((value[1:]).replace(',', ''))
 
 def rankImage(frame, avg, value):
-    print('function called')
 
     # If value is less than average
-    if makeUsable(value) < avg:
+    if value < avg:
         img = Image.open('arrows/arrowdown.png')        
-        print('The value is greater')
     else:
         img = Image.open('arrows/arrowup.png')
-        print('The value is less')
 
-    img = img.resize((50, 50), Image.ANTIALIAS)
+    img = img.resize((40, 40), Image.ANTIALIAS)
     img = ImageTk.PhotoImage(img)
 
-    ratingImage = Canvas(frame, width = 50, height = 50)
+    ratingImage = Canvas(frame, width = 40, height = 40)
     ratingImage.create_image(0, 0, image = img, anchor = NW)
     ratingImage.image = img
 
     return ratingImage
-
+    
 i = 0
-def next(image, price, address, bed, bath, sqft, acres, house, text_box, rank_box):
+def next(image, price, address, bed, bath, sqft, acres, house, text_box):
+    
     global i
-    i+=1
-    if i>=len(price):
-        i=0
+    i += 1
+    if i >= len(price):
+        i = 0
+
     house.forget()
     url = image[i]
     img = Image.open(requests.get(url, stream=True).raw)
@@ -82,9 +79,6 @@ def next(image, price, address, bed, bath, sqft, acres, house, text_box, rank_bo
     text_box.insert(END,"\n"+acres[i]+" acres")
 
     '''Replace the ranking system'''
-
-
-    
 
 def back(image, price, address, bed, bath, sqft, acres, house, text_box):
     global i
@@ -106,7 +100,56 @@ def back(image, price, address, bed, bath, sqft, acres, house, text_box):
     text_box.insert(END,"\n"+bath[i])
     text_box.insert(END,"\n"+sqft[i])
     text_box.insert(END,"\n"+acres[i]+" acres")
+
+# man i hate how i wrote this sm but i cant think of a better way to do it
+def arrowReplacer(frame,
+                  priceArrow, bedArrow, bathArrow, sqftArrow, acreArrow,
+                  avgPrice, avgBeds, avgBaths, avgSqft, avgAcres,
+                  prices: list, beds: list, baths: list, sqft: list, acres: list):
+    global i
+
+    # this is specifically for the price ranking
+    if removeDollarSign(prices[i]) < float(avgPrice.replace(',', '')):
+        img = (Image.open('arrows/greenarrowdown.png')).resize((40, 40), Image.ANTIALIAS)
+    else:
+        img = (Image.open('arrows/redarrowup.png')).resize((40, 40), Image.ANTIALIAS)
+    img = ImageTk.PhotoImage(img)
+    ratingImage = Canvas(frame, width = 40, height = 40)
+    ratingImage.create_image(0, 0, image = img, anchor = NW)
+    ratingImage.image = img
+    ratingImage.place(anchor = 'nw', relx = 0.36, rely = 0.42)
+
+    # this is for beds
+    bedsRank = rankImage(frame, avgBeds, float((beds[i]).split()[0]))
+    bedsRank.place(anchor = 'nw', relx = 0.36, rely = 0.54)
+
+    # this is for baths
+    bathsRank = rankImage(frame, avgBaths, float((baths[i]).split()[0]))
+    bathsRank.place(anchor = 'nw', relx = 0.36, rely = 0.66)
+
+    # this is for acres
+    acreRank = rankImage(frame, avgAcres, float(acres[i]))
+    acreRank.place(anchor = 'nw', relx = 0.46, rely = 0.78)
+ 
+    sqftValue = ''.join(c for c in sqft[i] if c.isdigit())
+
+    if sqftValue == '':
+        img = (Image.open('arrows/x.png')).resize((25, 25), Image.ANTIALIAS)
+        img = ImageTk.PhotoImage(img)
+        x = Canvas(frame, width = 25, height = 25)
+        x.create_image(0, 0, image = img, anchor = NW)
+        x.image = img
+        x.place(anchor = 'nw', relx = 0.84, rely = 0.88)
     
+    else:
+        sqftValue = float(sqftValue)
+
+        sqftRank = rankImage(frame, avgSqft, sqftValue)
+        sqftRank.place(anchor = 'nw', relx = 0.82, rely = 0.86)
+
+
+
+        
 
 if __name__ == '__main__':
     main()
