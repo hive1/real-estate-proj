@@ -101,7 +101,7 @@ def main():
     rankHead.place(relx = 0.5, rely = 0.08, anchor = 'center')
 
     rankInstructions = Label(rankFrame,
-                             text = 'This ranking system is based how metric averages below and how the current listing compares to such. The arrows represent if the value is above or below its respective average.',
+                             text = 'This ranking system is based on the metric averages below and how the current listing compares to such. The arrows represent if the value is above or below its respective average.',
                              wraplength = 300, 
                              justify = 'center',
                              font = ('Fixedsys', 10))
