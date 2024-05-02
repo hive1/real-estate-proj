@@ -1,8 +1,6 @@
-import math
 from tkinter import *
 from PIL import Image, ImageTk
 import requests
-import json
 from bs4 import BeautifulSoup
 
 def main():
@@ -32,8 +30,35 @@ def findAvg(coll: list) -> int:
         return 0
     return total/count
 
-i=0
-def next(image, price, address, bed, bath, sqft, acres, house, text_box):
+
+# This function is dedicated to making parameters passed into 
+def makeUsable(value):
+    if "$" in value:
+        return int((value[1:]).replace(',', ''))
+    elif 
+
+def rankImage(frame, avg, value):
+    print('function called')
+
+    # If value is less than average
+    if makeUsable(value) < avg:
+        img = Image.open('arrows/arrowdown.png')        
+        print('The value is greater')
+    else:
+        img = Image.open('arrows/arrowup.png')
+        print('The value is less')
+
+    img = img.resize((50, 50), Image.ANTIALIAS)
+    img = ImageTk.PhotoImage(img)
+
+    ratingImage = Canvas(frame, width = 50, height = 50)
+    ratingImage.create_image(0, 0, image = img, anchor = NW)
+    ratingImage.image = img
+
+    return ratingImage
+
+i = 0
+def next(image, price, address, bed, bath, sqft, acres, house, text_box, rank_box):
     global i
     i+=1
     if i>=len(price):
@@ -55,6 +80,11 @@ def next(image, price, address, bed, bath, sqft, acres, house, text_box):
     text_box.insert(END,"\n"+bath[i])
     text_box.insert(END,"\n"+sqft[i])
     text_box.insert(END,"\n"+acres[i]+" acres")
+
+    '''Replace the ranking system'''
+
+
+    
 
 def back(image, price, address, bed, bath, sqft, acres, house, text_box):
     global i

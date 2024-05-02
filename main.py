@@ -4,14 +4,10 @@ from PIL import Image, ImageTk
 import requests
 import json
 from scraping import scrapeData
-from functions import findAvg, next, back
+from functions import findAvg, next, back, rankImage
 
 def main():
-    '''
-    TODO:
-        - Compare the values of each house to the average, give eaching average an individualized ranking
-        - Give a ranking based out of 5
-    '''
+
 
     # InpWidth = 512
     # InpHeight = 250
@@ -69,11 +65,12 @@ def main():
 
     info = Frame(root, 
                     height = (disHeight-20), 
-                    width = (550), #1600-1600/5+30
+                    width = (550),
                     highlightcolor = 'black', 
                     highlightbackground = 'black', 
                     highlightthickness = 5)
     info.pack(side='left',anchor='w',padx=(10,0),pady=10)
+
     '''starting the construction of the average frame to the right of the screen'''
     average = Frame(root, 
                     height = (disHeight/2.5+45), 
@@ -81,7 +78,7 @@ def main():
                     highlightcolor = 'black', 
                     highlightbackground = 'black', 
                     highlightthickness = 5)
-    average.pack(side='bottom', anchor = 'se',padx=10,pady=10)
+    average.pack(side='bottom', anchor = 'se', padx=10, pady=10)
 
     rankFrame = Frame(root, 
                     height = (disHeight/2.5+60), 
@@ -91,6 +88,23 @@ def main():
                     highlightthickness = 5)
     rankFrame.pack(side='top', anchor = 'ne',padx=10,pady=(10,0))
 
+    rankHead = Label(rankFrame,
+                     text = 'House Ranking',
+                     font = ('Fixedsys', 24))
+    rankHead.place(relx = 0.5, rely = 0.08, anchor = 'center')
+
+    rankInstructions = Label(rankFrame,
+                             text = 'This ranking system is based how metric averages below and how the current listing compares to such. The arrows represent if the value is above or below its respective average.',
+                             wraplength = 250, 
+                             justify = 'center',
+                             font = ('Fixedsys', 10))
+    rankInstructions.place(relx = 0.1, rely = 0.12, anchor = 'nw')
+    
+    '''
+    TODO:
+        - Compare the values of each house to the average, give eaching average an individualized ranking
+        - Give a ranking based out of 5
+    '''
 
     avgHead = Label(average, 
                     text = 'Averages',
@@ -99,17 +113,42 @@ def main():
 
     textAvg = Text(average,
                    height = 13.5,
-                   width = 28,
+                   width = 32,
                    font = ('Fixedsys', 15)) # this value specifically keeps turning into a str and idk why
-    textAvg.place(relx = 0.03, rely = 0.16, anchor='nw')
+    textAvg.place(relx = 0.1, rely = 0.18, anchor='nw')
 
     # Implementation of our ranking systems involving comparison with the rest of our data
     avgPrice = '{:,}'.format(round(avg, 2))
     avgBeds = round(findAvg(beds), 2)
     avgBaths = round(findAvg(baths), 2)
     avgAcres = round(findAvg(acres), 2)
-    avgAcres = round(findAvg(sqft), 2)
     avgSqft = round(findAvg(sqft), 2)
+
+    # gotta start from somewhere, I suppose
+    Label(rankFrame, 
+          text = 'Price: ',
+          font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.49, anchor = 'nw')
+    priceRank = rankImage(rankFrame, avg, prices[0])
+    priceRank.place(anchor = 'nw', relx = 0.38, rely = 0.49)
+    
+    Label(rankFrame, 
+          text = 'Baths: ',
+          font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.58, anchor = 'nw')
+    bathsRank = rankImage(rankFrame, avg, baths[0])
+    bathsRank.place(anchor = 'nw', relx = 0.38, rely = 0.59)
+
+    
+    Label(rankFrame, 
+          text = 'Acreage: ',
+          font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.67, anchor = 'nw')
+    
+    Label(rankFrame, 
+          text = 'Square Footage: ',
+          font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.77, anchor = 'nw')
+
+    Label(rankFrame, 
+            text = 'Beds: ',
+            font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.86, anchor = 'nw')
 
     # This is where we insert data into the textbox
     textAvg.insert(END, f'Average price: ${avgPrice}\n')
@@ -122,8 +161,8 @@ def main():
     textInfo = Text(info,
                    height = 12.4,
                    width = 52,
-                   font = ('Fixedsys', 15))
-    textInfo.place(relx = 0.5, rely = .81, anchor='center')
+                   font = ('Fixedsys', 16))
+    textInfo.place(relx = 0.5, rely = .8, anchor='center')
 
     # making everything 
     style = Style()
@@ -147,6 +186,7 @@ def main():
     textInfo.insert(END,"\n"+baths[0] + "\n")
     textInfo.insert(END,f"{sqft[0]}\n")
     textInfo.insert(END,f"{acres[0]} acres\n")
+
     
     '''Next & Back Buttons'''
     next_button=Button(text="next",command=lambda:next(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
@@ -154,9 +194,9 @@ def main():
     back_button=Button(text="back",command=lambda:back(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo))
     back_button.place(relx = 0.06, rely = .59, anchor='center')
 
-    print("images:",len(images))
-    print("addresses:",len(addresses))
-    print("prices:",len(prices))
+    print("images: ", len(images))
+    print("addresses: ", len(addresses))
+    print("prices: ", len(prices))
 
 
     root.mainloop()
