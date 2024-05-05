@@ -7,9 +7,8 @@ from scraping import scrapeData
 from functions import findAvg, next, back, rankImage, removeDollarSign, arrowReplacer
 
 def main():
-
     InpWidth = 512
-    InpHeight = 250
+    InpHeight = 470
 
     # # Creating a root window for main operations
     root = Tk()
@@ -30,12 +29,32 @@ def main():
         root.destroy()
 
     basicFrame = Frame(root).pack()
-    inputLabel = Label(basicFrame, text = 'Please input the zip code of your desired location: ', font=('Kannada MW', 14))
-    inputLabel.pack(side=TOP, pady=5, padx=5)
+    zipLabel = Label(basicFrame, text = 'Please input the zip code of your desired location: ', font=('Kannada MW', 14))
+    bedLabel = Label(basicFrame, text = 'Beds: ', font=('Kannada MW', 14))
+    bathLabel = Label(basicFrame, text = 'Baths: ', font=('Kannada MW', 14))
+    minLabel = Label(basicFrame, text = 'Minimum Price: ', font=('Kannada MW', 14))
+    maxLabel = Label(basicFrame, text = 'Maximum Price: ', font=('Kannada MW', 14))
 
     # # The following variable would be used for storing the post code or name of city that the user requests
+    zipLabel.pack(side=TOP, pady=5, padx=5)
     locationVar = StringVar(basicFrame, value = None)
     Entry(basicFrame, textvariable=locationVar).pack(pady=10)
+
+    bedLabel.pack(side=TOP, pady=5, padx=5)
+    bedVar = StringVar(basicFrame, value = None)
+    Entry(basicFrame, textvariable=bedVar).pack(pady=10)
+
+    bathLabel.pack(side=TOP, pady=5, padx=5)
+    bathVar = StringVar(basicFrame, value = None)
+    Entry(basicFrame, textvariable=bathVar).pack(pady=10)
+
+    minLabel.pack(side=TOP, pady=5, padx=5)
+    minVar = StringVar(basicFrame, value = None)
+    Entry(basicFrame, textvariable=minVar).pack(pady=10)
+
+    maxLabel.pack(side=TOP, pady=5, padx=5)
+    maxVar = StringVar(basicFrame, value = None)
+    Entry(basicFrame, textvariable=maxVar).pack(pady=10)
 
     # # goofy submit button
     submitButton = Button(basicFrame, text='SUBMIT')
@@ -139,9 +158,9 @@ def main():
           font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.42, anchor = 'nw')
     # If the price is less than the average price, this is a GOOD thing so I made special arrows for that
     if removeDollarSign(prices[0]) < float(avgPrice.replace(',', '')):
-        img = (Image.open('arrows/greenarrowdown.png')).resize((40, 40), Image.ANTIALIAS)
+        img = (Image.open('arrows/greenarrowdown.png')).resize((40, 40), Image.Resampling.LANCZOS)
     else:
-        img = (Image.open('arrows/redarrowup.png')).resize((40, 40), Image.ANTIALIAS)
+        img = (Image.open('arrows/redarrowup.png')).resize((40, 40), Image.Resampling.LANCZOS)
     img = ImageTk.PhotoImage(img)
     ratingImage = Canvas(rankFrame, width = 40, height = 40)
     ratingImage.create_image(0, 0, image = img, anchor = NW)
@@ -174,7 +193,7 @@ def main():
 
       # if the sqftValue is empty after the last filter, it would mean the data could not be retrieved
     if sqftValue == '':
-      img = (Image.open('arrows/x.png')).resize((20, 20), Image.ANTIALIAS)
+      img = (Image.open('arrows/x.png')).resize((20, 20), Image.Resampling.LANCZOS)
       img = ImageTk.PhotoImage(img)
       x = Canvas(rankFrame, width = 20, height = 20)
       x.create_image(0, 0, image = img, anchor = NW)

@@ -43,7 +43,7 @@ def rankImage(frame, avg, value):
     else:
         img = Image.open('arrows/arrowup.png')
 
-    img = img.resize((40, 40), Image.ANTIALIAS)
+    img = img.resize((40, 40), Image.Resampling.LANCZOS)
     img = ImageTk.PhotoImage(img)
 
     ratingImage = Canvas(frame, width = 40, height = 40)
@@ -110,9 +110,9 @@ def arrowReplacer(frame,
 
     # this is specifically for the price ranking
     if removeDollarSign(prices[i]) < float(avgPrice.replace(',', '')):
-        img = (Image.open('arrows/greenarrowdown.png')).resize((40, 40), Image.ANTIALIAS)
+        img = (Image.open('arrows/greenarrowdown.png')).resize((40, 40), Image.Resampling.LANCZOS)
     else:
-        img = (Image.open('arrows/redarrowup.png')).resize((40, 40), Image.ANTIALIAS)
+        img = (Image.open('arrows/redarrowup.png')).resize((40, 40), Image.Resampling.LANCZOS)
     img = ImageTk.PhotoImage(img)
     ratingImage = Canvas(frame, width = 40, height = 40)
     ratingImage.create_image(0, 0, image = img, anchor = NW)
@@ -134,7 +134,7 @@ def arrowReplacer(frame,
     sqftValue = ''.join(c for c in sqft[i] if c.isdigit())
 
     if sqftValue == '':
-        img = (Image.open('arrows/x.png')).resize((25, 25), Image.ANTIALIAS)
+        img = (Image.open('arrows/x.png')).resize((25, 25), Image.Resampling.LANCZOS)
         img = ImageTk.PhotoImage(img)
         x = Canvas(frame, width = 25, height = 25)
         x.create_image(0, 0, image = img, anchor = NW)
@@ -146,10 +146,6 @@ def arrowReplacer(frame,
 
         sqftRank = rankImage(frame, avgSqft, sqftValue)
         sqftRank.place(anchor = 'nw', relx = 0.82, rely = 0.86)
-
-
-
-        
 
 if __name__ == '__main__':
     main()
