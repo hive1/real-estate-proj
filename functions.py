@@ -103,7 +103,6 @@ def back(image, price, address, bed, bath, sqft, acres, house, text_box):
 
 # man i hate how i wrote this sm but i cant think of a better way to do it
 def arrowReplacer(frame,
-                  priceArrow, bedArrow, bathArrow, sqftArrow, acreArrow,
                   avgPrice, avgBeds, avgBaths, avgSqft, avgAcres,
                   prices: list, beds: list, baths: list, sqft: list, acres: list):
     global i

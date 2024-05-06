@@ -192,7 +192,7 @@ def main():
     sqftValue = ''.join(c for c in sqft[0] if c.isdigit())
 
       # if the sqftValue is empty after the last filter, it would mean the data could not be retrieved
-    if sqftValue == '':
+    if not sqftValue:
       img = (Image.open('arrows/x.png')).resize((20, 20), Image.Resampling.LANCZOS)
       img = ImageTk.PhotoImage(img)
       x = Canvas(rankFrame, width = 20, height = 20)
@@ -245,7 +245,6 @@ def main():
     '''Next & Back Buttons'''
     next_button=Button(text="next",command=lambda: [next(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo),
                                                          arrowReplacer(rankFrame, 
-                                                                       ratingImage, bedsRank, bathsRank, sqftRank, acreRank,
                                                                        avgPrice, avgBeds, avgBaths, avgSqft, avgAcres,
                                                                        prices, beds, baths, sqft, acres)])
     next_button.place(relx = 0.57, rely = .59, anchor='center') 
