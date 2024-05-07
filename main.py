@@ -250,7 +250,6 @@ def main():
     next_button.place(relx = 0.57, rely = .59, anchor='center') 
     back_button=Button(text="back",command=lambda: [back(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo),
                                                          arrowReplacer(rankFrame, 
-                                                                       ratingImage, bedsRank, bathsRank, sqftRank, acreRank,
                                                                        avgPrice, avgBeds, avgBaths, avgSqft, avgAcres,
                                                                        prices, beds, baths, sqft, acres)])
     back_button.place(relx = 0.06, rely = .59, anchor='center')
