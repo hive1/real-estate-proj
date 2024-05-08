@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 import requests
 from bs4 import BeautifulSoup
+from collections import OrderedDict
 
 def main():
     ex = ['2.5 baths', '2.5 baths', '1.5 baths', '2.5 baths', '2.5 baths', 
@@ -30,6 +31,8 @@ def findAvg(coll: list) -> int:
         return 0
     return total/count
 
+def getOnlyNumber(x):
+    return ''.join(c for c in x if c.isdigit())
 
 # This function is dedicated to making parameters passed into 
 def removeDollarSign(value):
@@ -100,6 +103,32 @@ def back(image, price, address, bed, bath, sqft, acres, house, text_box):
     text_box.insert(END,"\n"+bath[i])
     text_box.insert(END,"\n"+sqft[i])
     text_box.insert(END,"\n"+acres[i]+" acres")
+
+
+def deleteEntry(images, prices, addresses, beds, baths, sqft, acres, indicies_to_remove):
+    # print('sqft: ' + str(list_to_index_dict(sqft)))
+    # print('length of sqft: ' + str(len(sqft)))
+    # del sqft[index]
+
+    # print('acres' + str(list_to_index_dict(acres)))
+    # print('length of acres: ' + str(len(acres)))
+    # del acres[index]
+
+    # print('index removed')
+
+    for index in sorted(indicies_to_remove, reverse = True):
+        del images[index]
+        del prices[index]
+        del addresses[index]
+        del beds[index]
+        del baths[index]
+        del sqft[index]
+        del acres[index]
+
+    return images, prices, addresses, beds, baths, sqft, acres
+
+def list_to_index_dict(values):
+    return {value: index for index, value in enumerate(values)}
 
 # man i hate how i wrote this sm but i cant think of a better way to do it
 def arrowReplacer(frame,

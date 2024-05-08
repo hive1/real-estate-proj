@@ -2,9 +2,8 @@ from tkinter import *
 from tkinter.ttk import Style
 from PIL import Image, ImageTk
 import requests
-import json
 from scraping import scrapeData
-from functions import findAvg, next, back, rankImage, removeDollarSign, arrowReplacer
+from functions import *
 
 def main():
     InpWidth = 512
@@ -56,6 +55,13 @@ def main():
     maxVar = StringVar(basicFrame, value = None)
     Entry(basicFrame, textvariable=maxVar).pack(pady=10)
 
+    '''
+      TODO:
+      - Collecting data from the input objects requested in the input screen
+      - Use that data to filter results, filtering the lists used in code instead of
+      manipulating Selenium
+    '''
+
     # # goofy submit button
     submitButton = Button(basicFrame, text='SUBMIT')
     submitButton.configure(command=lambda: displayData(locationVar.get()))
@@ -74,10 +80,41 @@ def main():
     acres = []
     avg = None
 
+    # This is the portion of our algorithm in which we manipulate the data to fit the filters
     (images, prices, addresses, beds, baths, sqft, acres, avg) = scrapeData(locationVar.get())
+
+    # These conditionals assure that these variables are not empty
+    if bedVar:
+       deleted_indexes = []
+
+       for listing in beds:
+          # There is a possibility that the bed data for that listing isn't available, in which we skip that listing
+          try:
+            numericalListing = int(getOnlyNumber(listing))
+          except:
+            index = beds.index(listing)
+            #print(f'this index should be removed: {index}')
+            #images, prices, addresses, beds, baths, sqft, acres = deleteEntry(images, prices, addresses, beds, baths, sqft, acres, index)
+            deleted_indexes.append(index)
+
+          if numericalListing < int(bedVar.get()):
+             index = beds.index(listing)
+             #(images, prices, addresses, beds, baths, sqft, acres) = deleteEntry(images, prices, addresses, beds, baths, sqft, acres, index)
+             deleted_indexes.append(index)
+
+    if bathVar:
+        for listing in baths:
+            numericalListing = int(getOnlyNumber(listing))
+
+            if (numericalListing < int(bathVar.get())) or not getOnlyNumber:
+
+              # Now we take the index found here and delete it
+              index = baths.index(listing)
+              (images, prices, addresses, beds, baths, sqft, acres) = deleteEntry(images, prices, addresses, beds, baths, sqft, acres, index)
 
     root = Tk()
 
+    # This gives our assignment a little cute icon at the bottom of the screen
     p1 = PhotoImage(file = 'haus.png')
     root.iconphoto(False, p1)
 
@@ -125,12 +162,6 @@ def main():
                              justify = 'center',
                              font = ('Fixedsys', 10))
     rankInstructions.place(relx = 0.03 , rely = 0.12, anchor = 'nw')
-    
-    '''
-    TODO:
-        - Compare the values of each house to the average, give eaching average an individualized ranking
-        - Give a ranking based out of 5
-    '''
 
     avgHead = Label(average, 
                     text = 'Averages',
@@ -152,7 +183,6 @@ def main():
 
     
     '''Placing the arrows'''
-
     Label(rankFrame, 
           text = 'Price: ',
           font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.42, anchor = 'nw')
@@ -188,6 +218,7 @@ def main():
     Label(rankFrame, 
           text = 'Square Footage: ',
           font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.88, anchor = 'nw')
+    
     # the sqft[0] parameter is kinda annoying because it has a comma and "sq ft" at the end
     sqftValue = ''.join(c for c in sqft[0] if c.isdigit())
 
