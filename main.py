@@ -210,6 +210,7 @@ def main():
     Label(rankFrame, 
           text = 'Price: ',
           font = ('Fixedsys', 17)).place(relx = 0.03, rely = 0.42, anchor = 'nw')
+    
     # If the price is less than the average price, this is a GOOD thing so I made special arrows for that
     if removeDollarSign(prices[0]) < float(avgPrice.replace(',', '')):
         img = (Image.open('arrows/greenarrowdown.png')).resize((40, 40), Image.Resampling.LANCZOS)
@@ -296,7 +297,6 @@ def main():
     textInfo.insert(END,f"{sqft[0]}\n")
     textInfo.insert(END,f"{acres[0]} acres\n")
 
-    
     '''Next & Back Buttons'''
     next_button=Button(text="next",command=lambda: [next(images, prices, addresses, beds, baths, sqft, acres, house_image, textInfo),
                                                          arrowReplacer(rankFrame, 
