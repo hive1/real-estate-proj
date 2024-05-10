@@ -28,11 +28,11 @@ def main():
         root.destroy()
 
     basicFrame = Frame(root).pack()
-    zipLabel = Label(basicFrame, text = 'Please input the zip code of your desired location: ', font=('Kannada MW', 14))
-    bedLabel = Label(basicFrame, text = 'Beds: ', font=('Kannada MW', 14))
-    bathLabel = Label(basicFrame, text = 'Baths: ', font=('Kannada MW', 14))
-    minLabel = Label(basicFrame, text = 'Minimum Price: ', font=('Kannada MW', 14))
-    maxLabel = Label(basicFrame, text = 'Maximum Price: ', font=('Kannada MW', 14))
+    zipLabel = Label(basicFrame, text = 'Please input the zip code of your desired location: ', font=('Fixedsys', 14))
+    bedLabel = Label(basicFrame, text = 'Beds: ', font=('Fixedsys', 14))
+    bathLabel = Label(basicFrame, text = 'Baths: ', font=('Fixedsys', 14))
+    minLabel = Label(basicFrame, text = 'Minimum Price: ', font=('Fixedsys', 14))
+    maxLabel = Label(basicFrame, text = 'Maximum Price: ', font=('Fixedsys', 14))
 
     # # The following variable would be used for storing the post code or name of city that the user requests
     zipLabel.pack(side=TOP, pady=5, padx=5)
@@ -100,9 +100,8 @@ def main():
         # There is a possibility that the bed data for that listing isn't available, in which we skip that listing
         deleted_indexes = [i for i, listing in enumerate(beds) if getOnlyNumber(listing) != num_beds]
       deleted_indexes.sort(reverse=True)
-      print(beds)
       for i in deleted_indexes:
-        print(beds.pop(i))
+        beds.pop(i)
         images.pop(i)
         prices.pop(i)
         addresses.pop(i)
@@ -115,16 +114,12 @@ def main():
         # There is a possibility that the bed data for that listing isn't available, in which we skip that listing
         deleted_indexes = [i for i, listing in enumerate(baths) if getOnlyNumber(listing) != num_baths]
       deleted_indexes.sort(reverse=True)
-      print(baths)
       for i in deleted_indexes:
         beds.pop(i)
         images.pop(i)
         prices.pop(i)
         addresses.pop(i)
-        print(baths.pop(i))
-
-      print(deleted_indexes)
-      print(baths)
+        baths.pop(i)
 
     if minVar.get() != '':
       deleted_indexes = []
@@ -133,16 +128,27 @@ def main():
       deleted_indexes = [i for i, listing in enumerate(prices) if removeDollarSign(listing) < min]
       deleted_indexes.sort(reverse=True)
       
-      print(min)
       for i in deleted_indexes:
         beds.pop(i)
         images.pop(i)
-        print(prices.pop(i))
+        prices.pop(i)
         addresses.pop(i)
         baths.pop(i)
 
-      print(deleted_indexes)
-      print(min)
+    if maxVar.get() != '':
+      deleted_indexes = []
+      min = int(maxVar.get())
+
+      # There is a possibility that the bed data for that listing isn't available, in which we skip that listing
+      deleted_indexes = [i for i, listing in enumerate(prices) if removeDollarSign(listing) > min]
+      deleted_indexes.sort(reverse=True)
+      
+      for i in deleted_indexes:
+        beds.pop(i)
+        images.pop(i)
+        prices.pop(i)
+        addresses.pop(i)
+        baths.pop(i)
 
     root = Tk()
 
@@ -264,7 +270,7 @@ def main():
     textAvg.insert(END, f'Average Price: ${avgPrice}\n')
     textAvg.insert(END, f'Average Beds: {avgBeds}\n')
     textAvg.insert(END, f'Average Baths: {avgBaths}\n')
-    textAvg.insert(END, f'Average Square Footage: {avgSqft}')
+    textAvg.insert(END, f'Average Square Footage: {avgSqft}\n')
     textAvg.insert(END, f'Average Acreage: {avgAcres}\n')
     textAvg.config(state = DISABLED)
 
@@ -309,9 +315,9 @@ def main():
                                                                        prices, beds, baths, sqft, acres)])
     back_button.place(relx = 0.06, rely = .59, anchor='center')
 
-    print("images: ", len(images))
-    print("addresses: ", len(addresses))
-    print("prices: ", len(prices))
+    # print("images: ", len(images))
+    # print("addresses: ", len(addresses))
+    # print("prices: ", len(prices))
 
     root.mainloop()
 

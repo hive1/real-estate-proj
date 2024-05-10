@@ -110,18 +110,6 @@ def back(image, price, address, bed, bath, sqft, acres, house, text_box):
 
 
 def deleteEntry(images, prices, addresses, beds, baths, sqft, acres, indicies_to_remove):
-    # print('sqft: ' + str(list_to_index_dict(sqft)))
-    # print('length of sqft: ' + str(len(sqft)))
-    # del sqft[index]
-
-    # print('acres' + str(list_to_index_dict(acres)))
-    # print('length of acres: ' + str(len(acres)))
-    # del acres[index]
-
-    # print('index removed')
-
-    print(indicies_to_remove)
-
     for index in sorted(indicies_to_remove, reverse = True):
         del images[index]
         del prices[index]
@@ -129,17 +117,17 @@ def deleteEntry(images, prices, addresses, beds, baths, sqft, acres, indicies_to
         del beds[index]
         del baths[index]
 
-        print(f'length of sqft: {len(sqft)}')
-        print(f'index requested: {index}')
+        # print(f'length of sqft: {len(sqft)}')
+        # print(f'index requested: {index}')
         if index == len(sqft):
             del sqft[index-1]
-        print('sqft value deleted\n')
+        # print('sqft value deleted\n')
 
-        print(f'length of acres: {len(acres)}')
-        print(f'index requested: {index}')
+        # print(f'length of acres: {len(acres)}')
+        # print(f'index requested: {index}')
         if index == len(acres):
             del acres[index-1]
-        print('acre value deleted\n')
+        # print('acre value deleted\n')
 
     return images, prices, addresses, beds, baths, sqft, acres
 
