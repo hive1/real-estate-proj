@@ -32,7 +32,11 @@ def findAvg(coll: list) -> int:
     return total/count
 
 def getOnlyNumber(x):
-    return ''.join(c for c in x if c.isdigit())
+    for c in x:
+        if c.isdigit():
+            return int(c)
+        else:
+            return -1
 
 # This function is dedicated to making parameters passed into 
 def removeDollarSign(value):
@@ -116,14 +120,26 @@ def deleteEntry(images, prices, addresses, beds, baths, sqft, acres, indicies_to
 
     # print('index removed')
 
+    print(indicies_to_remove)
+
     for index in sorted(indicies_to_remove, reverse = True):
         del images[index]
         del prices[index]
         del addresses[index]
         del beds[index]
         del baths[index]
-        del sqft[index]
-        del acres[index]
+
+        print(f'length of sqft: {len(sqft)}')
+        print(f'index requested: {index}')
+        if index == len(sqft):
+            del sqft[index-1]
+        print('sqft value deleted\n')
+
+        print(f'length of acres: {len(acres)}')
+        print(f'index requested: {index}')
+        if index == len(acres):
+            del acres[index-1]
+        print('acre value deleted\n')
 
     return images, prices, addresses, beds, baths, sqft, acres
 

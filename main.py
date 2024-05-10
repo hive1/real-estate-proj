@@ -83,34 +83,66 @@ def main():
     # This is the portion of our algorithm in which we manipulate the data to fit the filters
     (images, prices, addresses, beds, baths, sqft, acres, avg) = scrapeData(locationVar.get())
 
+    avgPrice = '{:,}'.format(round(avg, 2))
+    avgBeds = round(findAvg(beds), 2)
+    avgBaths = round(findAvg(baths), 2)
+    avgAcres = round(findAvg(acres), 2)
+    avgSqft = round(findAvg(sqft), 2)
+
+    '''
+    Filters
+    '''
     # These conditionals assure that these variables are not empty
-    if bedVar:
-       deleted_indexes = []
+    if bedVar.get() != '':
+      deleted_indexes = []
+      num_beds = int(bedVar.get())
+      for listing in beds:
+        # There is a possibility that the bed data for that listing isn't available, in which we skip that listing
+        deleted_indexes = [i for i, listing in enumerate(beds) if getOnlyNumber(listing) != num_beds]
+      deleted_indexes.sort(reverse=True)
+      print(beds)
+      for i in deleted_indexes:
+        print(beds.pop(i))
+        images.pop(i)
+        prices.pop(i)
+        addresses.pop(i)
+        baths.pop(i)
 
-       for listing in beds:
-          # There is a possibility that the bed data for that listing isn't available, in which we skip that listing
-          try:
-            numericalListing = int(getOnlyNumber(listing))
-          except:
-            index = beds.index(listing)
-            #print(f'this index should be removed: {index}')
-            #images, prices, addresses, beds, baths, sqft, acres = deleteEntry(images, prices, addresses, beds, baths, sqft, acres, index)
-            deleted_indexes.append(index)
+    if bathVar.get() != '':
+      deleted_indexes = []
+      num_baths = int(bathVar.get())
+      for listing in baths:
+        # There is a possibility that the bed data for that listing isn't available, in which we skip that listing
+        deleted_indexes = [i for i, listing in enumerate(baths) if getOnlyNumber(listing) != num_baths]
+      deleted_indexes.sort(reverse=True)
+      print(baths)
+      for i in deleted_indexes:
+        beds.pop(i)
+        images.pop(i)
+        prices.pop(i)
+        addresses.pop(i)
+        print(baths.pop(i))
 
-          if numericalListing < int(bedVar.get()):
-             index = beds.index(listing)
-             #(images, prices, addresses, beds, baths, sqft, acres) = deleteEntry(images, prices, addresses, beds, baths, sqft, acres, index)
-             deleted_indexes.append(index)
+      print(deleted_indexes)
+      print(baths)
 
-    if bathVar:
-        for listing in baths:
-            numericalListing = int(getOnlyNumber(listing))
+    if minVar.get() != '':
+      deleted_indexes = []
+      min = int(minVar.get())
+      # There is a possibility that the bed data for that listing isn't available, in which we skip that listing
+      deleted_indexes = [i for i, listing in enumerate(prices) if removeDollarSign(listing) < min]
+      deleted_indexes.sort(reverse=True)
+      
+      print(min)
+      for i in deleted_indexes:
+        beds.pop(i)
+        images.pop(i)
+        print(prices.pop(i))
+        addresses.pop(i)
+        baths.pop(i)
 
-            if (numericalListing < int(bathVar.get())) or not getOnlyNumber:
-
-              # Now we take the index found here and delete it
-              index = baths.index(listing)
-              (images, prices, addresses, beds, baths, sqft, acres) = deleteEntry(images, prices, addresses, beds, baths, sqft, acres, index)
+      print(deleted_indexes)
+      print(min)
 
     root = Tk()
 
@@ -124,7 +156,6 @@ def main():
     disHeight = 700
     root.geometry(f'{disWidth}x{disHeight}')
     root.title('Real Estate Finder')
-
 
     info = Frame(root, 
                     height = (disHeight-20), 
@@ -173,13 +204,6 @@ def main():
                    width = 32,
                    font = ('Fixedsys', 15)) # this value specifically keeps turning into a str and idk why
     textAvg.place(relx = 0.1, rely = 0.18, anchor='nw')
-
-    # Implementation of our ranking systems involving comparison with the rest of our data
-    avgPrice = '{:,}'.format(round(avg, 2))
-    avgBeds = round(findAvg(beds), 2)
-    avgBaths = round(findAvg(baths), 2)
-    avgAcres = round(findAvg(acres), 2)
-    avgSqft = round(findAvg(sqft), 2)
 
     
     '''Placing the arrows'''
